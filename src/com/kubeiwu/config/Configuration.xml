@@ -48,6 +48,7 @@
   <mappers>
     <mapper resource="com/kubeiwu/config/GirlInfo.xml"/>
     <mapper resource="com/kubeiwu/config/GirlImage.xml"/>
+    <mapper resource="com/kubeiwu/config/Administrator.xml"/>
   </mappers>
 
 </configuration>

@@ -1,13 +1,12 @@
-package com.kubeiwu.service;
+package com.kubeiwu.service.girdinfo;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.kubeiwu.bean.GirlInfo;
 import com.kubeiwu.bean.ResponseInfo;
 import com.kubeiwu.constant.ResponseCode;
-import com.kubeiwu.dao.GirlInfoDao;
 
-public class GirlDetailsService implements Service {
+public class GirlDetailsService implements GirdinfoService {
 
 	@Override
 	public String handleRequest(HttpServletRequest req) {
@@ -17,8 +16,8 @@ public class GirlDetailsService implements Service {
 
 		try {
 			int girlInfoId = Integer.parseInt(id);
-			GirlInfoDao messageDao = new GirlInfoDao();
-			GirlInfo girlInfo = messageDao.queryGirlInfoById(girlInfoId);
+
+			GirlInfo girlInfo = GIRLINFODAO.queryGirlInfoById(girlInfoId);
 			responseInfo.setData(girlInfo);
 
 			responseInfo.setCode(ResponseCode.SUCCESS_CODE);

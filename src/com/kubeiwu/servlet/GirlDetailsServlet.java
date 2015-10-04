@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.kubeiwu.service.GirlDetailsService;
 import com.kubeiwu.service.Service;
+import com.kubeiwu.service.girdinfo.GirlDetailsService;
 
 /**
  * 列表查询

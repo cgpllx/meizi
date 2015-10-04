@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.kubeiwu.service.ListService;
+import com.kubeiwu.service.Service;
+import com.kubeiwu.service.girdinfo.InsertService;
 
 /**
  * 登陆
@@ -17,13 +18,13 @@ import com.kubeiwu.service.ListService;
  *
  */
 @SuppressWarnings("serial")
-public class ListServlet extends HttpServlet {
+public class InsertGirlInfoServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("application/json;charset=utf-8");
 		PrintWriter out = resp.getWriter();
-
-		ListService listservice = new ListService();
+	
+		Service listservice = new InsertService();
 		out.write(listservice.handleRequest(req));
 
 		out.flush();
