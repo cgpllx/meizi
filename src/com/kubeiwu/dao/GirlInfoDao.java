@@ -49,7 +49,7 @@ public class GirlInfoDao implements Dao, IGirlInfo {
 	 * @return
 	 */
 	public GirlInfo queryGirlInfoById(int id) {
-		GirlInfo girlInfo = new GirlInfo();
+		GirlInfo girlInfo = null;
 		SqlSession sqlSession = null;
 		try {
 			sqlSession = BACCESS.getSqlSession();
@@ -64,6 +64,45 @@ public class GirlInfoDao implements Dao, IGirlInfo {
 			}
 		}
 		return girlInfo;
+	}
+
+	@Override
+	public GirlInfo queryGirlInfoByFromUrl(String fromurl) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = BACCESS.getSqlSession();
+
+			IGirlInfo iGirlInfo = sqlSession.getMapper(IGirlInfo.class);
+			GirlInfo girlInfoId = iGirlInfo.queryGirlInfoByFromUrl(fromurl);
+			return girlInfoId;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public int updateOne(GirlInfo girlInfo) {
+		SqlSession sqlSession = null;
+		int count = 0;
+		try {
+			sqlSession = BACCESS.getSqlSession();
+
+			IGirlInfo iGirlInfo = sqlSession.getMapper(IGirlInfo.class);
+			count = iGirlInfo.updateOne(girlInfo);
+			sqlSession.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+		return count;
 	}
 
 	/**

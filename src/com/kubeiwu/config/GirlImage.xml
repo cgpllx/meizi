@@ -8,13 +8,13 @@
 		<result column="IMAGEURL" jdbcType="VARCHAR" property="imageurl" />
 		<result column="GIRLINFO_ID" jdbcType="INTEGER" property="girlinfo_id" />
 	</resultMap>
-
+<!-- insert 插入 replace 替换插入 -->
 	<insert id="insertOne" parameterType="com.kubeiwu.bean.GirlImage">
-		insert into GIRLIMAGE(IMAGEURL,GIRLINFO_ID)
+		insert ignore into GIRLIMAGE(IMAGEURL,GIRLINFO_ID)
 		value(#{imageurl},#{girlinfo_id});
 	</insert>
 	<insert id="insertBatch" parameterType="java.util.List" statementType="PREPARED" keyProperty="id">
-		insert into GIRLIMAGE(IMAGEURL,GIRLINFO_ID)
+		insert ignore into GIRLIMAGE(IMAGEURL,GIRLINFO_ID)
 		values
 		<foreach collection="list" item="item" separator=",">
 			(#{item.imageurl},#{item.girlinfo_id})

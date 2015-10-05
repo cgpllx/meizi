@@ -12,18 +12,15 @@ import com.kubeiwu.bean.ResponseInfo;
 import com.kubeiwu.constant.ResponseCode;
 import com.kubeiwu.dao.AdministratorDao;
 import com.kubeiwu.dao.GirlInfoDao;
-import com.kubeiwu.service.Service;
 
 /**
  * 列表相关的业务功能 servlet不与dao层直接交互
  * 
  * @author Sumkor
  */
-public class ListService implements GirdinfoService{
-
+public class ListService implements GirdinfoService {
 
 	public List<GirlInfo> queryGirlInfoList(int category_code, int currentPage, int pageCount) {
-
 
 		RequestListPara parameter = new RequestListPara();// 参数封装
 		parameter.setCategory_code(category_code);
@@ -42,20 +39,26 @@ public class ListService implements GirdinfoService{
 		String count = req.getParameter("count");
 
 		try {
-
-			Pattern pattern = Pattern.compile("[0-9]{1,9}");// 只能为0-9，最长9位数，因为是int
-			if (!pattern.matcher(page).matches()) {
-				throw new Exception("page错误  只能是0-9");
-			}
-
-			int category_code = Integer.parseInt(category);
-			int currentPage = Integer.parseInt(page);
+			int category_code;
 			int pageCount;
+			int currentPage;
+
+			if (page == null) {
+				category_code = 1;
+			} else {
+				Pattern pattern = Pattern.compile("[0-9]{1,9}");// 只能为0-9，最长9位数，因为是int
+				if (!pattern.matcher(page).matches()) {
+					throw new Exception("page错误  只能是0-9");
+				}
+				category_code = Integer.parseInt(category);
+			}
 			if (count != null && !count.equals("")) {
 				pageCount = Integer.parseInt(count);
 			} else {
 				pageCount = DEFAULT_PAGE_COUNT;
 			}
+
+			currentPage = Integer.parseInt(page);
 
 			List<GirlInfo> girlinfos = queryGirlInfoList(category_code, currentPage, pageCount);
 			responseInfo.setData(girlinfos);
@@ -73,35 +76,46 @@ public class ListService implements GirdinfoService{
 	}
 
 	public static void main(String[] args) {
-		
-		
-		AdministratorDao administratorDao= new AdministratorDao();
-		Administrator message=new Administrator();
-		message.setPassword("cgp888");
-		message.setUsername("cgpllx2");;
-		int count=administratorDao.count(message);
+		GirlInfoDao messageDao = new GirlInfoDao();
+		GirlInfo id = messageDao.queryGirlInfoByFromUrl("http://m.mm131.com/mingxing/38.html");
+		System.out.println(id.getId());
+		id.setTitle("dddd");
+		id.setCategory_code(10);
+		id.setFromurl("ddd");
+		id.setCoverimage("ddd");
+		int count=messageDao.updateOne(id);
 		System.out.println(count);
-//		ListService listService = new ListService();
-//		List<GirlInfo> lists = listService.queryGirlInfoList(1, 1, 20);
-//		System.out.println(lists.size());
-//		System.out.println(lists.get(0).getGirlImages());
-//		GirlInfoDao messageDao = new GirlInfoDao();
-//		GirlInfo message = new GirlInfo();
-//		message.setCategory_code(1);
-//		message.setFromurl("再次测试ddddddd");
-//		message.setTitle("title标题");
-//		message.setCoverimage("coverimage");
-//		List<GirlImage> girlImages = new ArrayList<GirlImage>();
-//		GirlImage girlImage = new GirlImage();
-//		// girlImage.setGirlinfo_id(2);
-//		girlImage.setImageurl("再次测试皮赖难过ddddd");
-//		girlImages.add(girlImage);
-//		girlImages.add(girlImage);
-//		// girlImages.add(girlImage);
-//		message.setGirlImages(girlImages);
-//		messageDao.insertOne(message);
+		// ListService listService = new ListService();
+		// List<GirlInfo> lists = listService.queryGirlInfoList(1, 1, 20);
+		// System.out.println(lists.size());
+		// System.out.println(lists.get(0).getGirlImages());
+		// GirlInfoDao messageDao = new GirlInfoDao();
+		// GirlInfo message = new GirlInfo();
+		// message.setCategory_code(1);
+		// message.setFromurl("再次测试ddddddd");
+		// message.setTitle("title标题");
+		// message.setCoverimage("coverimage");
+		// List<GirlImage> girlImages = new ArrayList<GirlImage>();
+		// GirlImage girlImage = new GirlImage();
+		// // girlImage.setGirlinfo_id(2);
+		// girlImage.setImageurl("再次测试皮赖难过ddddd");
+		// girlImages.add(girlImage);
+		// girlImages.add(girlImage);
+		// // girlImages.add(girlImage);
+		// message.setGirlImages(girlImages);
+		// messageDao.insertOne(message);
 		// GirlInfo girlInfo=messageDao.queryGirlInfoById(1);
 		// System.out.println(new Gson().toJson(girlInfo));
 
+	}
+
+	public static void logintext() {
+		AdministratorDao administratorDao = new AdministratorDao();
+		Administrator message = new Administrator();
+		message.setPassword("cgp888");
+		message.setUsername("cgpllx2");
+		;
+		int count = administratorDao.count(message);
+		System.out.println(count);
 	}
 }

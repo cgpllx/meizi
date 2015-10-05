@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kubeiwu.dao.ICategory">
+	<!-- 600秒刷新一次缓存 -->
+	<cache eviction="FIFO" flushInterval="600000" size="512"
+		readOnly="true" />
+	<resultMap type="com.kubeiwu.bean.Category" id="CategoryResult">
+		<id column="ID" jdbcType="INTEGER" property="id" />
+		<result column="CATEGORY_CODE" jdbcType="INTEGER" property="category_code" />
+		<result column="CATEGORY_NAME" jdbcType="VARCHAR" property="category_name" />
+		<result column="CATEGORY_PINYIN" jdbcType="VARCHAR" property="category_pinyin" />
+	</resultMap>
+	<select id="queryCategoryList" resultMap="CategoryResult">
+		select
+		CATEGORY_CODE,CATEGORY_NAME,CATEGORY_PINYIN from
+		CATEGORY
+		order by ID
+	</select>
+</mapper>

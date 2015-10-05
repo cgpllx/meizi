@@ -15,7 +15,6 @@
 		<result column="TITLE" jdbcType="VARCHAR" property="title" />
 		<result column="FROMURL" jdbcType="VARCHAR" property="fromurl" />
 		<result column="STATUS" jdbcType="BOOLEAN" property="status" />
-		<result column="CATEGORY_NAME" jdbcType="VARCHAR" property="category_name" />
 		<result column="CATEGORY_CODE" jdbcType="INTEGER" property="category_code" />
 		<result column="COVERIMAGE" jdbcType="INTEGER" property="coverimage" />
 		<collection property="girlImages"
@@ -25,10 +24,10 @@
 	<!-- parameterType用于传参，如果只有一个参数可写成="String" -->
 	<select id="queryGirlInfoList" parameterType="com.kubeiwu.bean.RequestListPara"
 		resultMap="GirlInfoResult">
-		select ID,TITLE,FROMURL,CATEGORY_NAME ,CATEGORY_CODE ,COVERIMAGE from
+		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE from
 		GIRLINFO
 		<where>
-			CATEGORY_CODE=#{category_code}
+			CATEGORY_CODE=#{category_code} AND STATUS = 1
 		</where>
 		order by ID limit #{dbIndex},#{pageCount}
 	</select>
@@ -42,6 +41,14 @@
 		on a.ID=b.GIRLINFO_ID where a.ID =
 		#{_parameter}
 	</select>
+	<!-- 查询单个的详情 -->
+	<select id="queryGirlInfoByFromUrl" parameterType="String"
+		resultMap="GirlInfoResult">
+		select ID
+		from
+		GIRLINFO where FROMURL =
+		#{_parameter}
+	</select>
 
 	<!-- 插入一条 -->
 	<!--执行增加操作的SQL语句。id和parameterType 分别与IUserOperation接口中的addUser方法的名字和 参数类型一致。以#{name}的形式引用Student参数 
@@ -49,9 +56,13 @@
 		为"true"表明要MyBatis获取由数据库自动生成的主 键；keyProperty="id"指定把获取到的主键值注入 到Student的id属性 -->
 	<insert id="insertOne" useGeneratedKeys="true" keyProperty="id"
 		statementType="PREPARED" parameterType="com.kubeiwu.bean.GirlInfo">
-		insert into
+		replace into
 		GIRLINFO(TITLE,FROMURL,CATEGORY_CODE,COVERIMAGE)
 		value(#{title},#{fromurl},#{category_code},#{coverimage});
 	</insert>
-
+	<update id="updateOne" parameterType="com.kubeiwu.bean.GirlInfo">
+		update GIRLINFO set
+		TITLE=#{title},FROMURL=#{fromurl},CATEGORY_CODE=#{category_code} ,COVERIMAGE=#{coverimage} where
+		ID=#{id}
+	</update>
 </mapper>
