@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kubeiwu.dao.ISourceCategory">
+	<!-- 600秒刷新一次缓存 -->
+	<cache eviction="FIFO" flushInterval="600000" size="512"
+		readOnly="true" />
+	<resultMap type="com.kubeiwu.bean.SourceCategory" id="SourceCategoryResult">
+		<id column="ID" jdbcType="INTEGER" property="id" />
+		<result column="SOURCECATEGORY_CODE" jdbcType="INTEGER" property="sourcecategory_code" />
+		<result column="TAG" jdbcType="VARCHAR" property="tag" />
+	</resultMap>
+	<select id="querySourceCategoryList" resultMap="SourceCategoryResult">
+		select
+		SOURCECATEGORY_CODE,TAG from
+		SOURCECATEGORY where 1 = 1
+		order by ID
+	</select>
+</mapper>

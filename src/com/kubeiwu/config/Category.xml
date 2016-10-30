@@ -9,13 +9,14 @@
 	<resultMap type="com.kubeiwu.bean.Category" id="CategoryResult">
 		<id column="ID" jdbcType="INTEGER" property="id" />
 		<result column="CATEGORY_CODE" jdbcType="INTEGER" property="category_code" />
+		<result column="PID" jdbcType="INTEGER" property="pid" />
 		<result column="CATEGORY_NAME" jdbcType="VARCHAR" property="category_name" />
 		<result column="CATEGORY_PINYIN" jdbcType="VARCHAR" property="category_pinyin" />
 	</resultMap>
-	<select id="queryCategoryList" resultMap="CategoryResult">
+	<select id="queryCategoryList" parameterType="int" resultMap="CategoryResult">
 		select
 		CATEGORY_CODE,CATEGORY_NAME,CATEGORY_PINYIN from
-		CATEGORY
+		CATEGORY  where PID = #{_parameter} AND STATUS = 1 
 		order by ID
 	</select>
 </mapper>

@@ -8,25 +8,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.kubeiwu.service.administrator.LoginService;
+import com.kubeiwu.service.Service;
+import com.kubeiwu.service.girdinfo.InsertService;
 
 /**
- * 列表查询
+ * 登陆
  * 
  * @author cgp
  *
  */
 @SuppressWarnings("serial")
-public class LoginServlet extends HttpServlet {
+public class InsertGroupImageInfoServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("application/json;charset=utf-8");
 		PrintWriter out = resp.getWriter();
-
-		LoginService listservice = new LoginService();
-		
-
+	
+		Service listservice = new InsertService();
 		out.write(listservice.handleRequest(req));
+
 		out.flush();
 		out.close();
 

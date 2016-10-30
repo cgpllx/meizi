@@ -15,21 +15,22 @@
 
 	<!-- 查询girl列表 -->
 	<servlet>
-		<servlet-name>girllist</servlet-name>
-		<servlet-class>com.kubeiwu.servlet.GirlListServlet</servlet-class>
+		<servlet-name>groupImageInfoList</servlet-name>
+		<servlet-class>com.kubeiwu.servlet.GroupImageInfoListServlet</servlet-class>
+ 
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>girllist</servlet-name>
-		<url-pattern>/girllist</url-pattern>
+		<servlet-name>groupImageInfoList</servlet-name>
+		<url-pattern>/groupImageInfoList</url-pattern>
 	</servlet-mapping>
 	<!-- 查询girl详情 -->
 	<servlet>
-		<servlet-name>girlinfo</servlet-name>
-		<servlet-class>com.kubeiwu.servlet.GirlDetailsServlet</servlet-class>
+		<servlet-name>groupImageInfoDetails</servlet-name>
+		<servlet-class>com.kubeiwu.servlet.GroupImageInfoDetailsServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>girlinfo</servlet-name>
-		<url-pattern>/girlinfo</url-pattern>
+		<servlet-name>groupImageInfoDetails</servlet-name>
+		<url-pattern>/groupImageInfoDetails</url-pattern>
 	</servlet-mapping>
 	<!-- 登陆 -->
 	<servlet>
@@ -43,12 +44,12 @@
 
 	<!-- 添加数据 -->
 	<servlet>
-		<servlet-name>savegirlinfo</servlet-name>
-		<servlet-class>com.kubeiwu.servlet.InsertGirlInfoServlet</servlet-class>
+		<servlet-name>insertGroupImageInfo</servlet-name>
+		<servlet-class>com.kubeiwu.servlet.InsertGroupImageInfoServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>savegirlinfo</servlet-name>
-		<url-pattern>/savegirlinfo</url-pattern>
+		<servlet-name>insertGroupImageInfo</servlet-name>
+		<url-pattern>/insertGroupImageInfo</url-pattern>
 	</servlet-mapping>
 	<!-- 类型列表 -->
 	<servlet>
@@ -59,5 +60,13 @@
 		<servlet-name>categoryList</servlet-name>
 		<url-pattern>/categoryList</url-pattern>
 	</servlet-mapping>
-
+	<!-- 大型的类型列表 -->
+	<servlet>
+		<servlet-name>sourcecategoryList</servlet-name>
+		<servlet-class>com.kubeiwu.servlet.SourceCategoryListServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>sourcecategoryList</servlet-name>
+		<url-pattern>/sourcecategoryList</url-pattern>
+	</servlet-mapping>
 </web-app>

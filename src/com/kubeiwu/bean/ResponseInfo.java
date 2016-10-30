@@ -1,8 +1,13 @@
 package com.kubeiwu.bean;
 
+import com.google.gson.annotations.Expose;
+
 public class ResponseInfo<T> {
+	@Expose
 	private String code;
+	@Expose
 	private String desc;
+	@Expose
 	private T data;
 
 	public String getCode() {

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kubeiwu.dao.IImage">
+	<resultMap type="com.kubeiwu.bean.Image" id="ImageResult">
+		<id column="GID" jdbcType="INTEGER" property="id" />
+		<result column="IMAGEURL" jdbcType="VARCHAR" property="imageurl" />
+		<result column="GROUPIMAGEINFO_ID" jdbcType="INTEGER" property="groupimageinfo_id" />
+	</resultMap>
+	<!-- insert 插入 replace 替换插入 -->
+	<insert id="insertOne" parameterType="com.kubeiwu.bean.Image">
+		insert ignore into
+		IMAGE(IMAGEURL,GROUPIMAGEINFO_ID)
+		value(#{imageurl},#{groupimageinfo_id});
+	</insert>
+	<insert id="insertBatch" parameterType="java.util.List"
+		statementType="PREPARED" keyProperty="id">
+		insert ignore into IMAGE(IMAGEURL,GROUPIMAGEINFO_ID)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.imageurl},#{item.groupimageinfo_id})
+		</foreach>
+	</insert>
+	<insert id="insertReplace" parameterType="java.util.List"
+		statementType="PREPARED" keyProperty="id">
+		replace into IMAGE(IMAGEURL,GROUPIMAGEINFO_ID)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.imageurl},#{item.groupimageinfo_id})
+		</foreach>
+	</insert>
+
+</mapper>

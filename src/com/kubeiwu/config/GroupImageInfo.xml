@@ -4,65 +4,76 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kubeiwu.dao.IGirlInfo">
+<mapper namespace="com.kubeiwu.dao.IGroupImageInfo">
 	<!-- 600秒刷新一次缓存 -->
 	<cache eviction="FIFO" flushInterval="600000" size="512"
 		readOnly="true" />
 
 	<!-- 配置数据库字段与JavaBean属性值对应关系 -->
-	<resultMap type="com.kubeiwu.bean.GirlInfo" id="GirlInfoResult">
+	<resultMap type="com.kubeiwu.bean.GroupImageInfo" id="GroupImageInfoResult">
 		<id column="ID" jdbcType="INTEGER" property="id" />
 		<result column="TITLE" jdbcType="VARCHAR" property="title" />
 		<result column="FROMURL" jdbcType="VARCHAR" property="fromurl" />
 		<result column="STATUS" jdbcType="BOOLEAN" property="status" />
 		<result column="CATEGORY_CODE" jdbcType="INTEGER" property="category_code" />
 		<result column="COVERIMAGE" jdbcType="INTEGER" property="coverimage" />
-		<collection property="girlImages"
-			resultMap="com.kubeiwu.dao.IGirlImage.GirlImageResult" />
+		<collection property="images" resultMap="com.kubeiwu.dao.IImage.ImageResult" />
 		<!-- IGirlImage.GirlImage中的id不能和这里的id重复，使用我重新写了一个名字 Gid -->
 	</resultMap>
 	<!-- parameterType用于传参，如果只有一个参数可写成="String" -->
-	<select id="queryGirlInfoList" parameterType="com.kubeiwu.bean.RequestListPara"
-		resultMap="GirlInfoResult">
+	<select id="queryGroupImageInfoList" parameterType="com.kubeiwu.bean.RequestListPara"
+		resultMap="GroupImageInfoResult">
 		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE from
-		GIRLINFO
+		GROUPIMAGEINFO
 		<where>
 			CATEGORY_CODE=#{category_code} AND STATUS = 1
 		</where>
-		order by ID limit #{dbIndex},#{pageCount}
+		order by ID desc limit #{dbIndex},#{pageCount}
 	</select>
 
 	<!-- 查询单个的详情 -->
-	<select id="queryGirlInfoById" parameterType="int" resultMap="GirlInfoResult">
-		select a.ID ,a.TITLE,a.CATEGORY_NAME, b.IMAGEURL
+	<select id="queryGroupImageInfoById" parameterType="int"
+		resultMap="GroupImageInfoResult">
+		select a.ID ,a.TITLE,a.CATEGORY_CODE, b.IMAGEURL
 		from
-		GIRLINFO a left
-		join GIRLIMAGE b
-		on a.ID=b.GIRLINFO_ID where a.ID =
+		GROUPIMAGEINFO a left
+		join IMAGE b
+		on a.ID=b.GROUPIMAGEINFO_ID where
+		a.ID =
+		#{_parameter}
+	</select>
+	<select id="queryGroupImageInfoByFromUrl" parameterType="String"
+		resultMap="GroupImageInfoResult">
+		select ID
+		from
+		GROUPIMAGEINFO where FROMURL =
+		#{_parameter}
+	</select>
+	<select id="count" parameterType="int"
+		resultType="int">
+		select count(*)
+		from
+		GROUPIMAGEINFO where CATEGORY_CODE =
 		#{_parameter}
 	</select>
 	<!-- 查询单个的详情 -->
-	<select id="queryGirlInfoByFromUrl" parameterType="String"
-		resultMap="GirlInfoResult">
-		select ID
-		from
-		GIRLINFO where FROMURL =
-		#{_parameter}
-	</select>
+	<!-- <select id="queryGroupImageInfoByFromUrl" parameterType="String" resultMap="GroupImageInfoResult"> 
+		select ID from GROUPIMAGEINFO where FROMURL = #{_parameter} </select> -->
 
 	<!-- 插入一条 -->
 	<!--执行增加操作的SQL语句。id和parameterType 分别与IUserOperation接口中的addUser方法的名字和 参数类型一致。以#{name}的形式引用Student参数 
 		的name属性，MyBatis将使用反射读取Student参数 的此属性。#{name}中name大小写敏感。引用其他 的gender等属性与此一致。seGeneratedKeys设置 
 		为"true"表明要MyBatis获取由数据库自动生成的主 键；keyProperty="id"指定把获取到的主键值注入 到Student的id属性 -->
 	<insert id="insertOne" useGeneratedKeys="true" keyProperty="id"
-		statementType="PREPARED" parameterType="com.kubeiwu.bean.GirlInfo">
+		statementType="PREPARED" parameterType="com.kubeiwu.bean.GroupImageInfo">
 		replace into
-		GIRLINFO(TITLE,FROMURL,CATEGORY_CODE,COVERIMAGE)
+		GROUPIMAGEINFO(TITLE,FROMURL,CATEGORY_CODE,COVERIMAGE)
 		value(#{title},#{fromurl},#{category_code},#{coverimage});
 	</insert>
-	<update id="updateOne" parameterType="com.kubeiwu.bean.GirlInfo">
-		update GIRLINFO set
-		TITLE=#{title},FROMURL=#{fromurl},CATEGORY_CODE=#{category_code} ,COVERIMAGE=#{coverimage} where
+	<update id="updateOne" parameterType="com.kubeiwu.bean.GroupImageInfo">
+		update GROUPIMAGEINFO set
+		TITLE=#{title},FROMURL=#{fromurl},CATEGORY_CODE=#{category_code}
+		,COVERIMAGE=#{coverimage} where
 		ID=#{id}
 	</update>
 </mapper>

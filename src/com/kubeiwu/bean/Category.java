@@ -1,8 +1,14 @@
-package com.kubeiwu.bean;
+ package com.kubeiwu.bean;
+
+import com.google.gson.annotations.Expose;
 
 public class Category {
+	@Expose
 	private int category_code;
+	
+	@Expose
 	private String category_name;
+	
 	private String category_pinyin;
 
 	public int getCategory_code() {

@@ -6,17 +6,18 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.kubeiwu.bean.Category;
+import com.kubeiwu.bean.SourceCategory;
 
-public class CategoryDao implements Dao, ICategory {
+public class SourceCategoryDao implements Dao, ISourceCategory {
 	@Override
-	public List<Category> queryCategoryList(int sourceCategory_code) {
-		List<Category> categories = new ArrayList<Category>();
+	public List<SourceCategory> querySourceCategoryList() {
+		List<SourceCategory> categories = new ArrayList<SourceCategory>();
 		SqlSession sqlSession = null;
 		try {
 			sqlSession = BACCESS.getSqlSession();//
 
-			ICategory girlInfo = sqlSession.getMapper(ICategory.class);
-			categories = girlInfo.queryCategoryList(sourceCategory_code);
+			ISourceCategory girlInfo = sqlSession.getMapper(ISourceCategory.class);
+			categories = girlInfo.querySourceCategoryList();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

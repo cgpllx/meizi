@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.kubeiwu.bean.Administrator;
-import com.kubeiwu.bean.GirlInfo;
+import com.kubeiwu.bean.GroupImageInfo;
 import com.kubeiwu.bean.ResponseInfo;
 import com.kubeiwu.constant.ResponseCode;
 import com.kubeiwu.constant.SystemConstant;
@@ -14,12 +14,12 @@ import com.kubeiwu.constant.SystemConstant;
 /**
  * 登陆服务
  * 
- * @author Sumkor
+ * @author cgp
  */
 public class LoginService implements AdministratorService {
 	public String handleRequest(HttpServletRequest req) {
 
-		ResponseInfo<List<GirlInfo>> responseInfo = new ResponseInfo<List<GirlInfo>>();
+		ResponseInfo<List<GroupImageInfo>> responseInfo = new ResponseInfo<List<GroupImageInfo>>();
 
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");

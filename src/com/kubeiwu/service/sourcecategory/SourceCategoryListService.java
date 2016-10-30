@@ -1,32 +1,33 @@
-package com.kubeiwu.service.category;
+package com.kubeiwu.service.sourcecategory;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.kubeiwu.bean.Category;
 import com.kubeiwu.bean.ResponseInfo;
+import com.kubeiwu.bean.SourceCategory;
 import com.kubeiwu.constant.ResponseCode;
 import com.kubeiwu.dao.CategoryDao;
+import com.kubeiwu.dao.SourceCategoryDao;
 import com.kubeiwu.service.Service;
 
 /**
  * 列表相关的业务功能 servlet不与dao层直接交互
- * 
- * @author Sumkor
  */
-public class CategoryListService implements Service {
-	public static final CategoryDao CATEGORYDAO = new CategoryDao();
+public class SourceCategoryListService implements Service {
+
+	public static final SourceCategoryDao CATEGORYDAO = new SourceCategoryDao();
 
 	public String handleRequest(HttpServletRequest req) {
 
-		ResponseInfo<List<Category>> responseInfo = new ResponseInfo<List<Category>>();
-
-		String id = req.getParameter("id");
+		ResponseInfo<List<SourceCategory>> responseInfo = new ResponseInfo<List<SourceCategory>>();
 
 		try {
-			int sourceCategory_code = Integer.parseInt(id);
-			List<Category> data = CATEGORYDAO.queryCategoryList(sourceCategory_code);
+			List<SourceCategory> data = CATEGORYDAO.querySourceCategoryList();
 			responseInfo.setData(data);
 			responseInfo.setCode(ResponseCode.SUCCESS_CODE);
 			responseInfo.setDesc("正确处理");
@@ -38,5 +39,7 @@ public class CategoryListService implements Service {
 		
 		return GSON.toJson(responseInfo);
 	}
+
+ 
 
 }

@@ -5,13 +5,16 @@ import java.io.Reader;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.kubeiwu.bean.GirlInfo;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.kubeiwu.bean.GroupImageInfo;
 import com.kubeiwu.bean.ResponseInfo;
 import com.kubeiwu.constant.ResponseCode;
 import com.kubeiwu.constant.SystemConstant;
 
-public class InsertService implements GirdinfoService {
-
+public class InsertService implements PublicService {
+	public static final Gson GSON =new Gson();
 	@Override
 	public String handleRequest(HttpServletRequest req) {
 		ResponseInfo<Object> responseInfo = new ResponseInfo<Object>();
@@ -22,17 +25,18 @@ public class InsertService implements GirdinfoService {
 		} else {
 			try {
 				Reader reader = new InputStreamReader(req.getInputStream(), "utf-8");
-				GirlInfo girlInfo = GSON.fromJson(reader, GirlInfo.class);
-				if (girlInfo == null) {
+				GroupImageInfo groupImageInfo = GSON.fromJson(reader, GroupImageInfo.class);
+				if (groupImageInfo == null) {
 					throw new Exception("message==null");
 				}
-				GirlInfo db_girlInfo = GIRLINFODAO.queryGirlInfoByFromUrl(girlInfo.getFromurl());
-				if(db_girlInfo==null){
-					GIRLINFODAO.insertOne(girlInfo);
+				System.out.println("groupImageInfo.getFromurl()"+groupImageInfo.getFromurl());
+				GroupImageInfo db_groupImageInfo = GROUPIMAGEINFODAO.queryGroupImageInfoByFromUrl(groupImageInfo.getFromurl());
+				if(db_groupImageInfo==null){
+					GROUPIMAGEINFODAO.insertOne(groupImageInfo);
 					responseInfo.setDesc("提交成功");
 				}else{
-					girlInfo.setId(db_girlInfo.getId());
-					int count=GIRLINFODAO.updateOne(girlInfo);
+					groupImageInfo.setId(db_groupImageInfo.getId());
+					int count=GROUPIMAGEINFODAO.updateOne(groupImageInfo);
 					if(count>0){
 						responseInfo.setDesc("修改成功");
 					}else{
@@ -48,5 +52,6 @@ public class InsertService implements GirdinfoService {
 		}
 		return GSON.toJson(responseInfo);
 	}
+ 
 
 }
