@@ -1,4 +1,4 @@
-package com.kubeiwu.service.girdinfo;
+package com.kubeiwu.service.groupimageinfo;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -52,8 +52,8 @@ public class GroupImageInfoListService implements PublicService, ExclusionStrate
 
 	public String handleRequest(HttpServletRequest req) {
 
-		// ResponseInfo<List<GroupImageInfo>> responseInfo = new
-		// ResponseInfo<List<GroupImageInfo>>();
+		// ResponseInfo<List<GroupImageInfo>> responseInfo = new ResponseInfo<List<GroupImageInfo>>();
+		
 		ResponseInfo<Paging<List<GroupImageInfo>>> responseInfo = new ResponseInfo<Paging<List<GroupImageInfo>>>();
 
 

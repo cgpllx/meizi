@@ -1,4 +1,4 @@
-package com.kubeiwu.service.girdinfo;
+package com.kubeiwu.service.groupimageinfo;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -1,4 +1,4 @@
-package com.kubeiwu.service.girdinfo;
+package com.kubeiwu.service.groupimageinfo;
 
 import com.kubeiwu.dao.GroupImageInfoDao;
 import com.kubeiwu.service.Service;

@@ -13,7 +13,7 @@ import com.kubeiwu.service.Service;
 /**
  * 列表相关的业务功能 servlet不与dao层直接交互
  * 
- * @author Sumkor
+ * @author cgp
  */
 public class CategoryListService implements Service {
 	public static final CategoryDao CATEGORYDAO = new CategoryDao();

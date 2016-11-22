@@ -1,10 +1,12 @@
 package com.kubeiwu.dao;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.kubeiwu.SimpleImageInfo;
 import com.kubeiwu.bean.Image;
 import com.kubeiwu.bean.GroupImageInfo;
 import com.kubeiwu.bean.RequestListPara;
@@ -97,7 +99,7 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 			IImage iGirlImage = sqlSession.getMapper(IImage.class);
 			IGroupImageInfo iGirlInfo = sqlSession.getMapper(IGroupImageInfo.class);
 			count = iGirlInfo.updateOne(girlInfo);
-			
+
 			List<Image> images = girlInfo.getImages();
 			if (images != null && images.size() > 0) {
 				for (Image girlImage : images) {
@@ -106,8 +108,7 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 				System.out.println("images=" + images);
 				iGirlImage.insertReplace(images);
 			}
-			
-			
+
 			sqlSession.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -155,8 +156,256 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 	@Override
 	public int count(int categoryId) {
 		SqlSession sqlSession = BACCESS.getSqlSession(false);
-		IGroupImageInfo iGirlInfo = sqlSession.getMapper(IGroupImageInfo.class);
-		return iGirlInfo.count(categoryId);
+		IGroupImageInfo groupImageInfo = sqlSession.getMapper(IGroupImageInfo.class);
+		return groupImageInfo.count(categoryId);
+	}
+
+	@Override
+	public int updatePixel(GroupImageInfo message) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = BACCESS.getSqlSession();
+
+			IGroupImageInfo iGirlInfo = sqlSession.getMapper(IGroupImageInfo.class);
+			iGirlInfo.updatePixel(message);
+			sqlSession.commit();
+			return 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+
+		return -1;
+	}
+
+	@Override
+	public int updatePiccount(GroupImageInfo message) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = BACCESS.getSqlSession();
+
+			IGroupImageInfo iGirlInfo = sqlSession.getMapper(IGroupImageInfo.class);
+			iGirlInfo.updatePiccount(message);
+			sqlSession.commit();
+			return 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+
+		return -1;
+	}
+
+	public static void main2(String[] args) {
+
+		GroupImageInfoDao groupImageInfoDao = new GroupImageInfoDao();
+		List<GroupImageInfo> lists = groupImageInfoDao.queryGroupImageInfoListByWhere("");
+		SqlSession sqlSession = BACCESS.getSqlSession(false);
+
+		IImage iGirlImage = sqlSession.getMapper(IImage.class);
+		for (GroupImageInfo groupImageInfo : lists) {
+			int countoud = groupImageInfo.getPiccount();
+			if (countoud <= 0) {
+
+				try {
+
+					int count = iGirlImage.countByGroup(groupImageInfo.getId());
+
+					groupImageInfo.setPiccount(count);
+					int state = new GroupImageInfoDao().updatePiccount(groupImageInfo);
+					System.out.println("idv=" + groupImageInfo.getId() + "state=" + state + " +count=" + count);
+
+				} catch (Exception e) {
+
+					e.printStackTrace();
+				}
+			}
+
+		}
+	}
+
+	public static void main(String[] args) {
+
+		GroupImageInfoDao groupImageInfoDao = new GroupImageInfoDao();
+		List<GroupImageInfo> lists = groupImageInfoDao.queryGroupImageInfoListByWhere("");
+		for (GroupImageInfo groupImageInfo : lists) {
+			String pixel = groupImageInfo.getPixel();
+			System.out.println("getPixel=" + groupImageInfo.getPixel());
+			if (pixel == null || pixel.equals("")) {
+
+				String coverimage = groupImageInfo.getCoverimage();
+				// System.out.println("getPixel="+groupImageInfo.getPixel());
+				try {
+					URL realUrl = new URL(coverimage);
+					// Getting image data from a InputStream
+					SimpleImageInfo imageInfo = new SimpleImageInfo(realUrl.openStream());
+					groupImageInfo.setPixel(imageInfo.toString());
+					// groupImageInfo.setPixel("aaa");
+					// groupImageInfo.setPiccount(10);
+					int state = new GroupImageInfoDao().updatePixel(groupImageInfo);
+					// int state=new
+					// GroupImageInfoDao().updatePiccount(groupImageInfo);
+					System.out.println("state=" + state);
+					System.out.println("state=" + groupImageInfo.getId());
+					System.out.println(imageInfo.toString());
+
+				} catch (Exception e) {
+
+					e.printStackTrace();
+				}
+			}
+
+		}
+	}
+
+	@Override
+	public List<GroupImageInfo> queryGroupImageInfoListByWhere(String where) {
+		List<GroupImageInfo> messageList = new ArrayList<GroupImageInfo>();
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = BACCESS.getSqlSession();// 加载配置信息，Mybatis中相关的类Configuration
+
+			// 动态代理,接口没有实现类.Mybatis为接口提供实现类,即用Proxy.newProxyInstance()创建代理实例,返回类型为Object,利用泛型强制转换
+			IGroupImageInfo girlInfo = sqlSession.getMapper(IGroupImageInfo.class);
+			// 代理实例调用接口方法时,并不会执行,而是触发MapperProxy.invoke(),其中包含sqlSession.selectList(namespace.id,parameter)
+			// 至于为什么会包含,因为接口方法与(加载Mybatis的)配置信息对应得上,即 接口名.方法=namespace.id
+			messageList = girlInfo.queryGroupImageInfoListByWhere(where);
+			// Thread.sleep(100);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+		return messageList;
+	}
+
+	@Override
+	public int closeGroupImageById(int groupImageInfoId) {
+
+		int count = -1;
+
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = BACCESS.getSqlSession();// 加载配置信息，Mybatis中相关的类Configuration
+
+			IGroupImageInfo girlInfo = sqlSession.getMapper(IGroupImageInfo.class);
+
+			count = girlInfo.closeGroupImageById(groupImageInfoId);
+			
+			sqlSession.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+		return count;
+	}
+
+	@Override
+	public int openGroupImageById(int groupImageInfoId) {
+		int count = -1;
+
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = BACCESS.getSqlSession();// 加载配置信息，Mybatis中相关的类Configuration
+
+			IGroupImageInfo girlInfo = sqlSession.getMapper(IGroupImageInfo.class);
+
+			count = girlInfo.openGroupImageById(groupImageInfoId);
+			
+			sqlSession.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+		return count;
+	}
+
+	@Override
+	public int closeGroupImagesByCategoryCode(int categoryCode) {
+		int count = -1;
+
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = BACCESS.getSqlSession();// 加载配置信息，Mybatis中相关的类Configuration
+
+			IGroupImageInfo girlInfo = sqlSession.getMapper(IGroupImageInfo.class);
+
+			count = girlInfo.closeGroupImagesByCategoryCode(categoryCode);
+			
+			sqlSession.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+		return count;
+	}
+
+	@Override
+	public int openGroupImagesByCategoryCode(int categoryCode) {
+		int count = -1;
+
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = BACCESS.getSqlSession();// 加载配置信息，Mybatis中相关的类Configuration
+
+			IGroupImageInfo girlInfo = sqlSession.getMapper(IGroupImageInfo.class);
+
+			count = girlInfo.openGroupImagesByCategoryCode(categoryCode);
+			
+			sqlSession.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+		return count;
+	}
+
+	@Override
+	public List<GroupImageInfo> adminQueryGroupImageInfoList(RequestListPara parameter) {
+		List<GroupImageInfo> messageList = new ArrayList<GroupImageInfo>();
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = BACCESS.getSqlSession();
+ 
+			IGroupImageInfo girlInfo = sqlSession.getMapper(IGroupImageInfo.class);
+ 
+			messageList = girlInfo.adminQueryGroupImageInfoList(parameter);
+	 
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+		return messageList;
+	}
+
+	@Override
+	public int adminCount(int categoryId) {
+		SqlSession sqlSession = BACCESS.getSqlSession(false);
+		IGroupImageInfo  groupImageInfo= sqlSession.getMapper(IGroupImageInfo.class);
+		return groupImageInfo.adminCount(categoryId);
 	}
 
 }

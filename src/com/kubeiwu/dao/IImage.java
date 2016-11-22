@@ -11,4 +11,5 @@ public interface IImage {
 	public void insertOne(Image image);
 	public void insertBatch(List<Image> images);
 	public void insertReplace(List<Image> images);
+	public int countByGroup(int groupId);
 }

@@ -10,7 +10,7 @@
 <%@page import="com.kubeiwu.db.DBAccess"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="com.kubeiwu.bean.GroupImageInfo"%>
-<%@page import="com.kubeiwu.service.girdinfo.GroupImageInfoListService"%>
+<%@page import="com.kubeiwu.service.groupimageinfo.GroupImageInfoListService"%>
 <%@page import="java.sql.SQLException"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="java.sql.DriverManager"%>

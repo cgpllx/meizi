@@ -17,17 +17,19 @@ import utils.Base64Util;
 import utils.EncryptUtil;
 import utils.SimpleCrypto;
 
+import com.kubeiwu.service.Service;
+import com.kubeiwu.service.groupimageinfo.AdminGroupImageInfoListService;
 import com.kubeiwu.service.groupimageinfo.GroupImageInfoListService;
 
  
 @SuppressWarnings("serial")
-public class GroupImageInfoListServlet extends HttpServlet {
+public class AdminGroupImageInfoListServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("application/json;charset=utf-8");
 		ServletOutputStream pwout = resp.getOutputStream();
 
-		GroupImageInfoListService listservice = new GroupImageInfoListService();
+		Service listservice = new AdminGroupImageInfoListService();
 		try {
 //			byte[] result = AESUtil.encode(listservice.handleRequest(req)).getBytes("UTF-8");
 			byte[] result =listservice.handleRequest(req).getBytes("UTF-8");

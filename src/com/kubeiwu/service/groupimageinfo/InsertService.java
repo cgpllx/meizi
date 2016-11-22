@@ -1,4 +1,4 @@
-package com.kubeiwu.service.girdinfo;
+package com.kubeiwu.service.groupimageinfo;
 
 import java.io.InputStreamReader;
 import java.io.Reader;

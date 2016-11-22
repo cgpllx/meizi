@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.kubeiwu.service.Service;
 import com.kubeiwu.service.category.CategoryListService;
-import com.kubeiwu.service.girdinfo.GroupImageInfoDetailsService;
+import com.kubeiwu.service.groupimageinfo.GroupImageInfoDetailsService;
 import com.kubeiwu.service.sourcecategory.SourceCategoryListService;
 
 /**

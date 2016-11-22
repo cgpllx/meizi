@@ -17,7 +17,6 @@
 	<servlet>
 		<servlet-name>groupImageInfoList</servlet-name>
 		<servlet-class>com.kubeiwu.servlet.GroupImageInfoListServlet</servlet-class>
- 
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>groupImageInfoList</servlet-name>
@@ -69,4 +68,59 @@
 		<servlet-name>sourcecategoryList</servlet-name>
 		<url-pattern>/sourcecategoryList</url-pattern>
 	</servlet-mapping>
+	
+		<!-- 关闭GroupImage byid -->
+	<servlet>
+		<servlet-name>closeGroupImageInfoById</servlet-name>
+		<servlet-class>com.kubeiwu.servlet.CloseGroupImageInfoByIdServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>closeGroupImageInfoById</servlet-name>
+		<url-pattern>/closeGroupImageInfoById</url-pattern>
+	</servlet-mapping>
+	
+			<!-- 打开GroupImage byid -->
+	<servlet>
+		<servlet-name>openGroupImageInfoById</servlet-name>
+		<servlet-class>com.kubeiwu.servlet.OpenGroupImageInfoByIdServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>openGroupImageInfoById</servlet-name>
+		<url-pattern>/openGroupImageInfoById</url-pattern>
+	</servlet-mapping>
+	
+		<!-- 关闭 GroupImageInfoByCategoryCodeServlet-->
+	<servlet>
+		<servlet-name>closeGroupImageInfoByCategoryCode</servlet-name>
+		<servlet-class>com.kubeiwu.servlet.CloseGroupImageInfoByCategoryCodeServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>closeGroupImageInfoByCategoryCode</servlet-name>
+		<url-pattern>/closeGroupImageInfoByCategoryCode</url-pattern>
+	</servlet-mapping>
+	
+		<!-- 打开 GroupImageInfoByCategoryCodeServlet-->
+	<servlet>
+		<servlet-name>openGroupImageInfoByCategoryCode</servlet-name>
+		<servlet-class>com.kubeiwu.servlet.OpenGroupImageInfoByCategoryCodeServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>openGroupImageInfoByCategoryCode</servlet-name>
+		<url-pattern>/openGroupImageInfoByCategoryCode</url-pattern>
+	</servlet-mapping>
+			<!-- 打开 GroupImageInfoByCategoryCodeServlet-->
+	<servlet>
+		<servlet-name>adminGroupImageInfoList</servlet-name>
+		<servlet-class>com.kubeiwu.servlet.AdminGroupImageInfoListServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>adminGroupImageInfoList</servlet-name>
+		<url-pattern>/adminGroupImageInfoList</url-pattern>
+	</servlet-mapping>
+ 
 </web-app>

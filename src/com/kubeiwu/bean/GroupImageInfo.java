@@ -3,7 +3,7 @@ package com.kubeiwu.bean;
 import java.util.List;
 
 import com.google.gson.annotations.Expose;
-import com.kubeiwu.service.girdinfo.GroupImageInfoListService.GroupImageInfoList_exclude;
+import com.kubeiwu.service.groupimageinfo.GroupImageInfoListService.GroupImageInfoList_exclude;
 
 public class GroupImageInfo {
 	@Expose
@@ -19,6 +19,37 @@ public class GroupImageInfo {
 	private List<Image> images;
 	@Expose
 	private String coverimage;//封面图片
+	@Expose
+	private int piccount;//数量
+	@Expose
+	private String pixel;//尺寸
+	@Expose
+	private boolean status;//尺寸
+	
+	
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	public int getPiccount() {
+		return piccount;
+	}
+
+	public void setPiccount(int piccount) {
+		this.piccount = piccount;
+	}
+
+	public String getPixel() {
+		return pixel;
+	}
+
+	public void setPixel(String pixel) {
+		this.pixel = pixel;
+	}
 
 	public String getCoverimage() {
 		return coverimage;
