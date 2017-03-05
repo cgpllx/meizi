@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -16,7 +17,7 @@ import com.kubeiwu.constant.SystemConstant;
 public class InsertService implements PublicService {
 	public static final Gson GSON =new Gson();
 	@Override
-	public String handleRequest(HttpServletRequest req) {
+	public String handleRequest(HttpServletRequest req,HttpServletResponse resp) {
 		ResponseInfo<Object> responseInfo = new ResponseInfo<Object>();
 		if (req.getSession().getAttribute(SystemConstant.USER_KEY) == null) {// no
 		// req.getSession().g // login

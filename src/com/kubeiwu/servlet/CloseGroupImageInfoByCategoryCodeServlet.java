@@ -27,7 +27,7 @@ public class CloseGroupImageInfoByCategoryCodeServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
  
 		Service listservice = new CloseGroupImageByCategoryCodeService();
-		out.write(listservice.handleRequest(req));
+		out.write(listservice.handleRequest(req,resp));
 
 		out.flush();
 		out.close();

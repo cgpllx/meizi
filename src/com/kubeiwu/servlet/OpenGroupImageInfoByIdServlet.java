@@ -27,7 +27,7 @@ public class OpenGroupImageInfoByIdServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 	
 		Service listservice = new OpenGroupImageByIdService();
-		out.write(listservice.handleRequest(req));
+		out.write(listservice.handleRequest(req,resp));
 
 		out.flush();
 		out.close();

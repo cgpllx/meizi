@@ -3,6 +3,7 @@ package com.kubeiwu.service.sourcecategory;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -22,7 +23,7 @@ public class SourceCategoryListService implements Service {
 
 	public static final SourceCategoryDao CATEGORYDAO = new SourceCategoryDao();
 
-	public String handleRequest(HttpServletRequest req) {
+	public String handleRequest(HttpServletRequest req,HttpServletResponse resp) {
 
 		ResponseInfo<List<SourceCategory>> responseInfo = new ResponseInfo<List<SourceCategory>>();
 

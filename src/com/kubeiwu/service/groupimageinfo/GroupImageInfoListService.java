@@ -4,10 +4,15 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import utils.Utils;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -50,12 +55,12 @@ public class GroupImageInfoListService implements PublicService, ExclusionStrate
 		return GROUPIMAGEINFODAO.count(categoryId);
 	}
 
-	public String handleRequest(HttpServletRequest req) {
+	public String handleRequest(HttpServletRequest req,HttpServletResponse resp) {
 
-		// ResponseInfo<List<GroupImageInfo>> responseInfo = new ResponseInfo<List<GroupImageInfo>>();
-		
+		// ResponseInfo<List<GroupImageInfo>> responseInfo = new
+		// ResponseInfo<List<GroupImageInfo>>();
+
 		ResponseInfo<Paging<List<GroupImageInfo>>> responseInfo = new ResponseInfo<Paging<List<GroupImageInfo>>>();
-
 
 		String category = req.getParameter("category");
 		String page = req.getParameter("page");
@@ -83,28 +88,44 @@ public class GroupImageInfoListService implements PublicService, ExclusionStrate
 			if (page != null && !page.equals("")) {
 				currentPage = Integer.parseInt(page);
 			} else {
-				currentPage = 3;
+				currentPage = 1;
 			}
 
 			List<GroupImageInfo> groupImageInfos = queryGirlInfoList(category_code, currentPage, pageCount);
-			Paging<List<GroupImageInfo>> paging = new Paging<List<GroupImageInfo>>(getTotalCount(category_code),currentPage,pageCount);
+			Paging<List<GroupImageInfo>> paging = new Paging<List<GroupImageInfo>>(getTotalCount(category_code), currentPage, pageCount);
 			paging.setData(groupImageInfos);
 			paging.setTotalCount(getTotalCount(category_code));
 			responseInfo.setData(paging);
 			responseInfo.setCode(ResponseCode.SUCCESS_CODE);
 			responseInfo.setDesc("正确处理");
+			handleupdate(req, category_code);
+			resp.setHeader("Cache-Control", "max-age=36000");
+			resp.setHeader("Date", Utils.toGMTString());
 		} catch (Exception e) {
 			e.printStackTrace();
-
 			responseInfo.setCode(ResponseCode.ERROR_CODE);
 			responseInfo.setDesc("参数错误");
 		}
-
-		// GSON.toJson(jsonElement)
 		return GSON.toJson(responseInfo);
 	}
 
-	public static void main(String[] args) {
+	void handleupdate(HttpServletRequest req,int categoryCode) {
+		ServletContext servletContext = req.getServletContext();
+		Object lastDay = servletContext.getAttribute(categoryCode+"");// 上次更新的时间 day
+		Calendar c = Calendar.getInstance();// 可以对每个时间域单独修改
+		int date = c.get(Calendar.DATE);
+		String nowDay = String.valueOf(date);
+		if (lastDay != null && lastDay.equals(nowDay)) {// 今天已经更新了
+		} else {
+			int code = GROUPIMAGEINFODAO.open10RecordsByCategoryCode(categoryCode);
+			if (code != -1) {
+				servletContext.setAttribute(categoryCode+"", nowDay);
+			}
+			System.out.println("更新了10条 code＝"+code);
+		}
+	}
+
+	public static void main3(String[] args) {
 		GroupImageInfoDao messageDao = new GroupImageInfoDao();
 		GroupImageInfo id = messageDao.queryGroupImageInfoByFromUrl("http://m.mm131.com/mingxing/38.html");
 		System.out.println(id.getId());
@@ -136,6 +157,11 @@ public class GroupImageInfoListService implements PublicService, ExclusionStrate
 		// GirlInfo girlInfo=messageDao.queryGirlInfoById(1);
 		// System.out.println(new Gson().toJson(girlInfo));
 
+	}
+
+	public static void main(String[] args) {
+		GroupImageInfoDao messageDao = new GroupImageInfoDao();
+		messageDao.open10RecordsByCategoryCode(70);
 	}
 
 	public static void logintext() {

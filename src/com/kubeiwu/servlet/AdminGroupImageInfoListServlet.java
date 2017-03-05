@@ -32,7 +32,7 @@ public class AdminGroupImageInfoListServlet extends HttpServlet {
 		Service listservice = new AdminGroupImageInfoListService();
 		try {
 //			byte[] result = AESUtil.encode(listservice.handleRequest(req)).getBytes("UTF-8");
-			byte[] result =listservice.handleRequest(req).getBytes("UTF-8");
+			byte[] result =listservice.handleRequest(req,resp).getBytes("UTF-8");
 
 //			resp.setHeader("encryption", "1");
 			

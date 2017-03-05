@@ -1,13 +1,11 @@
 package com.kubeiwu.service.groupimageinfo;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+
 import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -49,7 +47,7 @@ public class AdminGroupImageInfoListService implements PublicService, ExclusionS
 		return GROUPIMAGEINFODAO.adminCount(categoryId);
 	}
 
-	public String handleRequest(HttpServletRequest req) {
+	public String handleRequest(HttpServletRequest req,HttpServletResponse resp) {
 		ResponseInfo<Paging<List<GroupImageInfo>>> responseInfo = new ResponseInfo<Paging<List<GroupImageInfo>>>();
  
 		if (req.getSession().getAttribute(SystemConstant.USER_KEY) == null) {// no

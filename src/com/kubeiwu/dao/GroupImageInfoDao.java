@@ -233,7 +233,7 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 	public static void main(String[] args) {
 
 		GroupImageInfoDao groupImageInfoDao = new GroupImageInfoDao();
-		List<GroupImageInfo> lists = groupImageInfoDao.queryGroupImageInfoListByWhere("");
+		List<GroupImageInfo> lists = groupImageInfoDao.queryGroupImageInfoListByWhere("320");
 		for (GroupImageInfo groupImageInfo : lists) {
 			String pixel = groupImageInfo.getPixel();
 			System.out.println("getPixel=" + groupImageInfo.getPixel());
@@ -406,6 +406,48 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 		SqlSession sqlSession = BACCESS.getSqlSession(false);
 		IGroupImageInfo  groupImageInfo= sqlSession.getMapper(IGroupImageInfo.class);
 		return groupImageInfo.adminCount(categoryId);
+	}
+//	<!-- 数据库中STATUS=1的前面10条设置为 STATUS=0 -->
+	@Override
+	public int open10RecordsByCategoryCode(int categoryCode) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = BACCESS.getSqlSession();
+
+			IGroupImageInfo iGirlInfo = sqlSession.getMapper(IGroupImageInfo.class);
+			iGirlInfo.open10RecordsByCategoryCode(categoryCode);
+			sqlSession.commit();
+			return 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+
+		return -1; 
+	}
+
+	@Override
+	public int openGroupImageByIds(List<String> ids) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = BACCESS.getSqlSession();
+
+			IGroupImageInfo iGirlInfo = sqlSession.getMapper(IGroupImageInfo.class);
+			iGirlInfo.openGroupImageByIds(ids);
+			sqlSession.commit();
+			return 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+
+		return -1; 
 	}
 
 }

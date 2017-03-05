@@ -37,23 +37,26 @@
 	<!-- STATUS = 1 没有这个限制 -->
 	<select id="adminQueryGroupImageInfoList" parameterType="com.kubeiwu.bean.RequestListPara"
 		resultMap="GroupImageInfoResult">
-		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE ,PICCOUNT,PIXEL,STATUS
+		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE
+		,PICCOUNT,PIXEL,STATUS
 		from
 		GROUPIMAGEINFO
 		<where>
 			CATEGORY_CODE=#{category_code}
 		</where>
-		order by TIME desc limit #{dbIndex},#{pageCount}
+		order by TIME asc limit #{dbIndex},#{pageCount}
 	</select>
 	<select id="queryGroupImageInfoListByWhere" parameterType="String"
 		resultMap="GroupImageInfoResult">
 		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE
 		,PICCOUNT,PIXEL
 		from
-		GROUPIMAGEINFO
-		order by TIME
+		GROUPIMAGEINFO where CATEGORY_CODE = #{_parameter}
+		AND STATUS = 1
+		order by TIME asc
+		limit 0,10
 	</select>
-
+	<!-- "category_code = " + id + " and status = 0" -->
 	<!-- 查询单个的详情 -->
 	<select id="queryGroupImageInfoById" parameterType="int"
 		resultMap="GroupImageInfoResult">
@@ -137,12 +140,42 @@
 		STATUS=1 where
 		ID=#{_parameter}
 	</update>
+
+	<update id="openGroupImageByIds" parameterType="java.util.List">
+		update
+		GROUPIMAGEINFO
+		set
+		STATUS=1 where
+		ID IN
+		<foreach collection="list" item="item" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<!-- <update id="openGroupImageByIds" parameterType="array"> update GROUPIMAGEINFO 
+		set STATUS=1 where ID IN <foreach collection="array" item="item" index="index" 
+		open="(" separator="," close=")"> #{item} </foreach> </update> -->
+	<!-- 数据库中STATUS=1的前面10条设置为 STATUS=0 -->
+	<update id="open10RecordsByCategoryCode" parameterType="int">
+		update
+		GROUPIMAGEINFO
+		set
+		STATUS=1 where
+		ID IN ( select a.ID
+		from(select ID from
+		GROUPIMAGEINFO
+		where CATEGORY_CODE=#{_parameter} AND STATUS = 0 order by TIME asc
+		limit 0,3) a
+		)
+	</update>
+	<!--关闭全部的 -->
 	<update id="closeGroupImagesByCategoryCode" parameterType="int">
 		update GROUPIMAGEINFO
 		set
 		STATUS=0 where
 		CATEGORY_CODE=#{_parameter}
 	</update>
+	<!-- 打开全部的CATEGORY_CODE -->
 	<update id="openGroupImagesByCategoryCode" parameterType="int">
 		update
 		GROUPIMAGEINFO
@@ -150,4 +183,5 @@
 		STATUS=1 where
 		CATEGORY_CODE=#{_parameter}
 	</update>
+
 </mapper>

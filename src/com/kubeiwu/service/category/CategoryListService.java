@@ -3,6 +3,7 @@ package com.kubeiwu.service.category;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.kubeiwu.bean.Category;
 import com.kubeiwu.bean.ResponseInfo;
@@ -18,7 +19,7 @@ import com.kubeiwu.service.Service;
 public class CategoryListService implements Service {
 	public static final CategoryDao CATEGORYDAO = new CategoryDao();
 
-	public String handleRequest(HttpServletRequest req) {
+	public String handleRequest(HttpServletRequest req,HttpServletResponse resp) {
 
 		ResponseInfo<List<Category>> responseInfo = new ResponseInfo<List<Category>>();
 

@@ -2,6 +2,8 @@ package com.kubeiwu.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.kubeiwu.bean.GroupImageInfo;
 import com.kubeiwu.bean.RequestListPara;
 
@@ -11,7 +13,7 @@ import com.kubeiwu.bean.RequestListPara;
 public interface IGroupImageInfo {
 	// 对应XML中id(queryMessageList),传入的参数,返回类型
 	List<GroupImageInfo> queryGroupImageInfoList(RequestListPara parameter);// 根据条件查询，需传入Page信息,不包含image集合
-	
+
 	List<GroupImageInfo> adminQueryGroupImageInfoList(RequestListPara parameter);// 根据条件查询，需传入Page信息,不包含image集合
 
 	List<GroupImageInfo> queryGroupImageInfoListByWhere(String where);// 根据条件查询，需传入Page信息,不包含image集合
@@ -29,15 +31,19 @@ public interface IGroupImageInfo {
 	int updatePiccount(GroupImageInfo message);//
 
 	int count(int categoryId);
-	
+
 	int adminCount(int categoryId);
 
 	int closeGroupImageById(int groupImageInfoId);
 
 	int openGroupImageById(int groupImageInfoId);
-	
+
 	int closeGroupImagesByCategoryCode(int categoryCode);
 
 	int openGroupImagesByCategoryCode(int categoryCode);
- 
+
+	int open10RecordsByCategoryCode(int categoryCode);
+
+	int openGroupImageByIds(List<String> ids);
+
 }

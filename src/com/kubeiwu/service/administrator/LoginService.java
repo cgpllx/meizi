@@ -3,6 +3,7 @@ package com.kubeiwu.service.administrator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.kubeiwu.bean.Administrator;
@@ -17,7 +18,7 @@ import com.kubeiwu.constant.SystemConstant;
  * @author cgp
  */
 public class LoginService implements AdministratorService {
-	public String handleRequest(HttpServletRequest req) {
+	public String handleRequest(HttpServletRequest req,HttpServletResponse resp) {
 
 		ResponseInfo<List<GroupImageInfo>> responseInfo = new ResponseInfo<List<GroupImageInfo>>();
 

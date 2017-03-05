@@ -26,7 +26,7 @@ public class LoginServlet extends HttpServlet {
 		LoginService listservice = new LoginService();
 		
 
-		out.write(listservice.handleRequest(req));
+		out.write(listservice.handleRequest(req,resp));
 		out.flush();
 		out.close();
 

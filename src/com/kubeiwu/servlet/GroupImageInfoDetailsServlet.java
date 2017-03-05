@@ -3,6 +3,10 @@ package com.kubeiwu.servlet;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.zip.GZIPOutputStream;
 
 import javax.servlet.ServletException;
@@ -10,6 +14,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import utils.Utils;
 
 import com.kubeiwu.service.Service;
 import com.kubeiwu.service.groupimageinfo.GroupImageInfoDetailsService;
@@ -29,8 +35,8 @@ public class GroupImageInfoDetailsServlet extends HttpServlet {
 		ServletOutputStream pwout = resp.getOutputStream();
 
 		Service listservice = new GroupImageInfoDetailsService();
-		byte[] result = listservice.handleRequest(req).getBytes("UTF-8");
-		String accept_encoding = resp.getHeader("Accept-Encoding");
+		byte[] result = listservice.handleRequest(req,resp).getBytes("UTF-8");
+		String accept_encoding = req.getHeader("Accept-Encoding");
 		System.out.println("gzip="+accept_encoding);
 		if (accept_encoding != null && accept_encoding.equalsIgnoreCase("gzip")) {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -41,7 +47,10 @@ public class GroupImageInfoDetailsServlet extends HttpServlet {
 			result = out.toByteArray();
 			resp.setHeader("Content-Encoding", "gzip");
 			resp.setHeader("Content-Length", result.length + "");
+
 		}
+		
+
 
 		pwout.write(result);
 		pwout.flush();

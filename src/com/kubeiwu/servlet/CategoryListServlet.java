@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.kubeiwu.service.category.CategoryListService;
 
 /**
- * 登陆
- * 
- * @author Sumkor
+ *
  *
  */
 @SuppressWarnings("serial")
@@ -24,7 +22,7 @@ public class CategoryListServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 
 		CategoryListService listservice = new CategoryListService();
-		out.write(listservice.handleRequest(req));
+		out.write(listservice.handleRequest(req,resp));
 
 		out.flush();
 		out.close();

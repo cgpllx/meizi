@@ -1,6 +1,7 @@
 package com.kubeiwu.service.groupimageinfo;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.kubeiwu.bean.ResponseInfo;
@@ -12,7 +13,7 @@ public class CloseGroupImageByCategoryCodeService implements PublicService {
 	public static final String ID = "categoryCode";
 
 	@Override
-	public String handleRequest(HttpServletRequest req) {
+	public String handleRequest(HttpServletRequest req,HttpServletResponse resp) {
 		ResponseInfo<Object> responseInfo = new ResponseInfo<Object>();
 		if (req.getSession().getAttribute(SystemConstant.USER_KEY) == null) {
 			responseInfo.setCode(ResponseCode.NOLOGIN_CODE);

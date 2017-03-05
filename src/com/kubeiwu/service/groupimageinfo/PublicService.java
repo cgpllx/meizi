@@ -5,4 +5,6 @@ import com.kubeiwu.service.Service;
 
 public interface PublicService extends Service {
 	GroupImageInfoDao GROUPIMAGEINFODAO = new GroupImageInfoDao();
+	
+	
 }
