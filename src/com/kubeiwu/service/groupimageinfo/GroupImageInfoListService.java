@@ -98,7 +98,7 @@ public class GroupImageInfoListService implements PublicService, ExclusionStrate
 			responseInfo.setData(paging);
 			responseInfo.setCode(ResponseCode.SUCCESS_CODE);
 			responseInfo.setDesc("正确处理");
-			handleupdate(req, category_code);
+			//handleupdate(req, category_code);
 			resp.setHeader("Cache-Control", "max-age=36000");
 			resp.setHeader("Date", Utils.toGMTString());
 		} catch (Exception e) {
