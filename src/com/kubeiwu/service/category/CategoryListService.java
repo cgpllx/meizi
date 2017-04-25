@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import utils.Utils;
+
 import com.kubeiwu.bean.Category;
 import com.kubeiwu.bean.ResponseInfo;
 import com.kubeiwu.constant.ResponseCode;
@@ -31,6 +33,8 @@ public class CategoryListService implements Service {
 			responseInfo.setData(data);
 			responseInfo.setCode(ResponseCode.SUCCESS_CODE);
 			responseInfo.setDesc("正确处理");
+			resp.setHeader("Cache-Control", "max-age=36000");
+			resp.setHeader("Date", Utils.toGMTString());
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseInfo.setCode(ResponseCode.ERROR_CODE);

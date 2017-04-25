@@ -122,5 +122,37 @@
 		<servlet-name>adminGroupImageInfoList</servlet-name>
 		<url-pattern>/adminGroupImageInfoList</url-pattern>
 	</servlet-mapping>
+ 			<!-- 热门列表-->
+	<servlet>
+		<servlet-name>groupImageInfoListByHot</servlet-name>
+		<servlet-class>com.kubeiwu.servlet.GroupImageInfoListByHotServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>groupImageInfoListByHot</servlet-name>
+		<url-pattern>/groupImageInfoListByHot</url-pattern>
+	</servlet-mapping>
+	
+	 			<!--删除一个图组-->
+	<servlet>
+		<servlet-name>deleteGroupImageInfoById</servlet-name>
+		<servlet-class>com.kubeiwu.servlet.DeleteGroupImageInfoByIdServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>deleteGroupImageInfoById</servlet-name>
+		<url-pattern>/deleteGroupImageInfoById</url-pattern>
+	</servlet-mapping>
+	
+		 <!--ad 信息-->
+	<servlet>
+		<servlet-name>aDInfo</servlet-name>
+		<servlet-class>com.kubeiwu.servlet.ADInfoServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>aDInfo</servlet-name>
+		<url-pattern>/adInfo</url-pattern>
+	</servlet-mapping>
  
 </web-app>

@@ -37,4 +37,8 @@
 		IMAGE where GROUPIMAGEINFO_ID =
 		#{_parameter}
 	</select>
+	<delete id="deleteByGid" parameterType="int">
+		delete from IMAGE where
+		GROUPIMAGEINFO_ID = #{_parameter}
+	</delete>
 </mapper>

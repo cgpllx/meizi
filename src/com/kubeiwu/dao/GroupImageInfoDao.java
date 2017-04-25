@@ -202,16 +202,16 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 		return -1;
 	}
 
-	public static void main2(String[] args) {
-
+	public static void main11(String[] args) {
+		System.out.println("lists=" + 11);
 		GroupImageInfoDao groupImageInfoDao = new GroupImageInfoDao();
-		List<GroupImageInfo> lists = groupImageInfoDao.queryGroupImageInfoListByWhere("");
+		List<GroupImageInfo> lists = groupImageInfoDao.queryGroupImageInfoListByWhere("1=1");
 		SqlSession sqlSession = BACCESS.getSqlSession(false);
-
+		System.out.println("lists=" + lists);
 		IImage iGirlImage = sqlSession.getMapper(IImage.class);
 		for (GroupImageInfo groupImageInfo : lists) {
 			int countoud = groupImageInfo.getPiccount();
-			if (countoud <= 0) {
+			if (countoud > -1) {
 
 				try {
 
@@ -230,7 +230,7 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main2(String[] args) {
 
 		GroupImageInfoDao groupImageInfoDao = new GroupImageInfoDao();
 		List<GroupImageInfo> lists = groupImageInfoDao.queryGroupImageInfoListByWhere("320");
@@ -299,7 +299,7 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 			IGroupImageInfo girlInfo = sqlSession.getMapper(IGroupImageInfo.class);
 
 			count = girlInfo.closeGroupImageById(groupImageInfoId);
-			
+
 			sqlSession.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -322,7 +322,7 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 			IGroupImageInfo girlInfo = sqlSession.getMapper(IGroupImageInfo.class);
 
 			count = girlInfo.openGroupImageById(groupImageInfoId);
-			
+
 			sqlSession.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -345,7 +345,7 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 			IGroupImageInfo girlInfo = sqlSession.getMapper(IGroupImageInfo.class);
 
 			count = girlInfo.closeGroupImagesByCategoryCode(categoryCode);
-			
+
 			sqlSession.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -368,7 +368,7 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 			IGroupImageInfo girlInfo = sqlSession.getMapper(IGroupImageInfo.class);
 
 			count = girlInfo.openGroupImagesByCategoryCode(categoryCode);
-			
+
 			sqlSession.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -386,11 +386,11 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 		SqlSession sqlSession = null;
 		try {
 			sqlSession = BACCESS.getSqlSession();
- 
+
 			IGroupImageInfo girlInfo = sqlSession.getMapper(IGroupImageInfo.class);
- 
+
 			messageList = girlInfo.adminQueryGroupImageInfoList(parameter);
-	 
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -404,10 +404,11 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 	@Override
 	public int adminCount(int categoryId) {
 		SqlSession sqlSession = BACCESS.getSqlSession(false);
-		IGroupImageInfo  groupImageInfo= sqlSession.getMapper(IGroupImageInfo.class);
+		IGroupImageInfo groupImageInfo = sqlSession.getMapper(IGroupImageInfo.class);
 		return groupImageInfo.adminCount(categoryId);
 	}
-//	<!-- 数据库中STATUS=1的前面10条设置为 STATUS=0 -->
+
+	// <!-- 数据库中STATUS=1的前面10条设置为 STATUS=0 -->
 	@Override
 	public int open10RecordsByCategoryCode(int categoryCode) {
 		SqlSession sqlSession = null;
@@ -426,7 +427,7 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 			}
 		}
 
-		return -1; 
+		return -1;
 	}
 
 	@Override
@@ -447,7 +448,59 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 			}
 		}
 
-		return -1; 
+		return -1;
 	}
+
+	@Override
+	public List<GroupImageInfo> queryGroupImageInfoListByHot(RequestListPara parameter) {
+		List<GroupImageInfo> messageList = new ArrayList<GroupImageInfo>();
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = BACCESS.getSqlSession();// 加载配置信息，Mybatis中相关的类Configuration
+			IGroupImageInfo girlInfo = sqlSession.getMapper(IGroupImageInfo.class);
+			messageList = girlInfo.queryGroupImageInfoListByHot(parameter);
+			// Thread.sleep(100);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+		return messageList;
+	}
+
+	@Override
+	public int countOfHot() {
+		SqlSession sqlSession = BACCESS.getSqlSession(false);
+		IGroupImageInfo groupImageInfo = sqlSession.getMapper(IGroupImageInfo.class);
+		return groupImageInfo.countOfHot();
+	}
+
+	@Override
+	public int delete(int id) {
+
+		SqlSession sqlSession = BACCESS.getSqlSession(false);
+		try {
+			IGroupImageInfo groupImageInfo = sqlSession.getMapper(IGroupImageInfo.class);
+			IImage image = sqlSession.getMapper(IImage.class);
+			image.deleteByGid(id);
+			groupImageInfo.delete(id);
+			sqlSession.commit();
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+		return -1;
+	}
+	public static void main(String[] args) {
+		GroupImageInfoDao groupImageInfoDao = new GroupImageInfoDao();
+		groupImageInfoDao.delete(19101);
+	}
+	
 
 }

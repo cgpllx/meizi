@@ -10,6 +10,12 @@ public class Category {
 	private String category_name;
 	
 	private String category_pinyin;
+	
+	@Expose
+	private String category_en_name;
+	
+	@Expose
+	private String category_icon;
 
 	public int getCategory_code() {
 		return category_code;
@@ -35,4 +41,21 @@ public class Category {
 		this.category_pinyin = category_pinyin;
 	}
 
+	public String getCategory_en_name() {
+		return category_en_name;
+	}
+
+	public void setCategory_en_name(String category_en_name) {
+		this.category_en_name = category_en_name;
+	}
+
+	public String getCategory_icon() {
+		return category_icon;
+	}
+
+	public void setCategory_icon(String category_icon) {
+		this.category_icon = category_icon;
+	}
+
+	
 }

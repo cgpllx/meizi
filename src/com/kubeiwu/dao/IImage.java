@@ -12,4 +12,5 @@ public interface IImage {
 	public void insertBatch(List<Image> images);
 	public void insertReplace(List<Image> images);
 	public int countByGroup(int groupId);
+	public int deleteByGid(int gid);//根据gid 删除image
 }

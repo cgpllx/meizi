@@ -12,10 +12,12 @@
 		<result column="PID" jdbcType="INTEGER" property="pid" />
 		<result column="CATEGORY_NAME" jdbcType="VARCHAR" property="category_name" />
 		<result column="CATEGORY_PINYIN" jdbcType="VARCHAR" property="category_pinyin" />
+		<result column="CATEGORY_EN_NAME" jdbcType="VARCHAR" property="category_en_name" />
+		<result column="CATEGORY_ICON" jdbcType="VARCHAR" property="category_icon" />
 	</resultMap>
 	<select id="queryCategoryList" parameterType="int" resultMap="CategoryResult">
 		select
-		CATEGORY_CODE,CATEGORY_NAME,CATEGORY_PINYIN from
+		CATEGORY_CODE,CATEGORY_NAME,CATEGORY_PINYIN,CATEGORY_EN_NAME,CATEGORY_ICON from
 		CATEGORY  where PID = #{_parameter} AND STATUS = 1 
 		order by ID
 	</select>

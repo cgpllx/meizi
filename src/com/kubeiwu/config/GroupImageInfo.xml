@@ -15,6 +15,7 @@
 		<result column="TITLE" jdbcType="VARCHAR" property="title" />
 		<result column="FROMURL" jdbcType="VARCHAR" property="fromurl" />
 		<result column="STATUS" jdbcType="BOOLEAN" property="status" />
+		<result column="ISHOT" jdbcType="BOOLEAN" property="ishot" />
 		<result column="CATEGORY_CODE" jdbcType="INTEGER" property="category_code" />
 		<result column="COVERIMAGE" jdbcType="INTEGER" property="coverimage" />
 		<result column="PICCOUNT" jdbcType="INTEGER" property="piccount" />
@@ -31,6 +32,17 @@
 		GROUPIMAGEINFO
 		<where>
 			CATEGORY_CODE=#{category_code} AND STATUS = 1
+		</where>
+		order by TIME desc limit #{dbIndex},#{pageCount}
+	</select>
+	<!-- parameterType用于传参，如果只有一个参数可写成="String" -->
+	<select id="queryGroupImageInfoListByHot" parameterType="com.kubeiwu.bean.RequestListPara"
+		resultMap="GroupImageInfoResult">
+		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE ,PICCOUNT,PIXEL
+		from
+		GROUPIMAGEINFO
+		<where>
+			ISHOT=1 AND STATUS = 1
 		</where>
 		order by TIME desc limit #{dbIndex},#{pageCount}
 	</select>
@@ -51,10 +63,10 @@
 		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE
 		,PICCOUNT,PIXEL
 		from
-		GROUPIMAGEINFO where CATEGORY_CODE = #{_parameter}
+		GROUPIMAGEINFO where #{_parameter}
 		AND STATUS = 1
-		order by TIME asc
-		limit 0,10
+		order by TIME desc
+		limit 0,10000000000
 	</select>
 	<!-- "category_code = " + id + " and status = 0" -->
 	<!-- 查询单个的详情 -->
@@ -82,6 +94,16 @@
 		GROUPIMAGEINFO
 		<where>
 			CATEGORY_CODE=#{_parameter} AND STATUS = 1
+		</where>
+
+	</select>
+	<select id="countOfHot" parameterType="int" resultType="int">
+		select
+		count(*)
+		from
+		GROUPIMAGEINFO
+		<where>
+			 ISHOT = 1
 		</where>
 
 	</select>
@@ -164,7 +186,8 @@
 		ID IN ( select a.ID
 		from(select ID from
 		GROUPIMAGEINFO
-		where CATEGORY_CODE=#{_parameter} AND STATUS = 0 order by TIME asc
+		where CATEGORY_CODE=#{_parameter} AND STATUS = 0 order
+		by TIME asc
 		limit 0,3) a
 		)
 	</update>
@@ -183,5 +206,8 @@
 		STATUS=1 where
 		CATEGORY_CODE=#{_parameter}
 	</update>
-
+	<delete id="delete" parameterType="int">
+		delete from GROUPIMAGEINFO where
+		ID = #{_parameter}
+	</delete>
 </mapper>

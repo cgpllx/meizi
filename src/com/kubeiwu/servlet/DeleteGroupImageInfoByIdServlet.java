@@ -8,22 +8,26 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import utils.Utils;
-
-import com.kubeiwu.service.category.CategoryListService;
+import com.kubeiwu.service.Service;
+import com.kubeiwu.service.groupimageinfo.CloseGroupImageByCategoryCodeService;
+import com.kubeiwu.service.groupimageinfo.CloseGroupImageByIdService;
+import com.kubeiwu.service.groupimageinfo.DeleteGroupImageByIdService;
+import com.kubeiwu.service.groupimageinfo.InsertService;
 
 /**
- *
+ * 登陆
+ * 
+ * @author cgp
  *
  */
 @SuppressWarnings("serial")
-public class CategoryListServlet extends HttpServlet {
+public class DeleteGroupImageInfoByIdServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("application/json;charset=utf-8");
 		PrintWriter out = resp.getWriter();
-
-		CategoryListService listservice = new CategoryListService();
+ 
+		Service listservice = new DeleteGroupImageByIdService();
 		out.write(listservice.handleRequest(req,resp));
 
 		out.flush();

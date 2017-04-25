@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kubeiwu.dao.IADInfo">
+	<!-- 600秒刷新一次缓存 -->
+	<cache eviction="FIFO" flushInterval="600000" size="512"
+		readOnly="true" />
+
+	<!-- 配置数据库字段与JavaBean属性值对应关系 -->
+	<resultMap type="com.kubeiwu.bean.ADInfo" id="ADInfoResult">
+		<id column="ID" jdbcType="INTEGER" property="id" />
+		<result column="AD_UNIT_ID_APPLICATIONCODE" jdbcType="VARCHAR" property="ad_unit_id_applicationCode" />
+		<result column="AD_UNIT_ID_NATIVE" jdbcType="VARCHAR" property="ad_unit_id_native" />
+		<result column="AD_UNIT_ID_BANNER" jdbcType="VARCHAR" property="ad_unit_id_banner" />
+		<result column="AD_UNIT_ID_INTERSTITIAL" jdbcType="VARCHAR" property="ad_unit_id_interstitial" />
+		<result column="STATUS" jdbcType="INTEGER" property="status" />
+	</resultMap>
+	<!-- parameterType用于传参，如果只有一个参数可写成="String" -->
+	<select id="queryADInfoList" resultMap="ADInfoResult">
+		select ID,AD_UNIT_ID_APPLICATIONCODE,AD_UNIT_ID_NATIVE, AD_UNIT_ID_BANNER ,AD_UNIT_ID_INTERSTITIAL
+		from
+		ADInfo
+		<where>
+			STATUS = 1
+		</where>
+		order by ID desc
+	</select>
+	
+</mapper>
