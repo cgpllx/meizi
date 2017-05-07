@@ -19,6 +19,8 @@ public interface IGroupImageInfo {
 	List<GroupImageInfo> queryGroupImageInfoListByWhere(String where);// 根据条件查询，需传入Page信息,不包含image集合
 	
 	List<GroupImageInfo> queryGroupImageInfoListByHot(RequestListPara parameter);// 根据条件查询，需传入Page信息,不包含image集合
+	
+	List<GroupImageInfo> queryGroupImageInfoListByNew(RequestListPara parameter);// 根据条件查询，需传入Page信息,不包含image集合
 
 	GroupImageInfo queryGroupImageInfoById(int id);// 根据id查询
 
@@ -31,6 +33,8 @@ public interface IGroupImageInfo {
 	int updatePixel(GroupImageInfo message);// piccount
 
 	int updatePiccount(GroupImageInfo message);//
+	
+	int updateLocalcoverimage(GroupImageInfo message);//
 
 	int count(int categoryId);
 	

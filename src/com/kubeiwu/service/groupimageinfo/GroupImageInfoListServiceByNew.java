@@ -26,20 +26,21 @@ import com.kubeiwu.bean.ResponseInfo;
 import com.kubeiwu.constant.ResponseCode;
 import com.kubeiwu.dao.AdministratorDao;
 import com.kubeiwu.dao.GroupImageInfoDao;
+import com.kubeiwu.service.groupimageinfo.GroupImageInfoListService.GroupImageInfoList_exclude;
 
 /**
  * 列表相关的业务功能 servlet不与dao层直接交互
  * 
  * @author cgp
  */
-public class GroupImageInfoListService implements PublicService, ExclusionStrategy {
+public class GroupImageInfoListServiceByNew implements PublicService, ExclusionStrategy {
 	Gson GSON = new GsonBuilder().setExclusionStrategies(this).create();
 
-	@Target(ElementType.FIELD)
-	@Retention(RetentionPolicy.RUNTIME)
-	public @interface GroupImageInfoList_exclude {
-
-	}
+//	@Target(ElementType.FIELD)
+//	@Retention(RetentionPolicy.RUNTIME)
+//	public @interface GroupImageInfoList_exclude {
+//
+//	}
 
 	public List<GroupImageInfo> queryGirlInfoList(int category_code, int currentPage, int pageCount) {
 
@@ -48,11 +49,11 @@ public class GroupImageInfoListService implements PublicService, ExclusionStrate
 		parameter.setDbIndex((currentPage - 1) * pageCount);
 		parameter.setPageCount(pageCount);
 
-		return GROUPIMAGEINFODAO.queryGroupImageInfoList(parameter);
+		return GROUPIMAGEINFODAO.queryGroupImageInfoListByNew(parameter);
 	}
 
 	public int getTotalCount(int categoryId) {
-		return GROUPIMAGEINFODAO.count(categoryId);
+		return 2;
 	}
 
 	public String handleRequest(HttpServletRequest req,HttpServletResponse resp) {
@@ -98,7 +99,7 @@ public class GroupImageInfoListService implements PublicService, ExclusionStrate
 			responseInfo.setData(paging);
 			responseInfo.setCode(ResponseCode.SUCCESS_CODE);
 			responseInfo.setDesc("正确处理");
-			handleupdate(req, category_code);
+			//handleupdate(req, category_code);
 			resp.setHeader("Cache-Control", "max-age=36000");
 			resp.setHeader("Date", Utils.toGMTString());
 		} catch (Exception e) {
@@ -125,55 +126,8 @@ public class GroupImageInfoListService implements PublicService, ExclusionStrate
 		}
 	}
 
-	public static void main3(String[] args) {
-		GroupImageInfoDao messageDao = new GroupImageInfoDao();
-		GroupImageInfo id = messageDao.queryGroupImageInfoByFromUrl("http://m.mm131.com/mingxing/38.html");
-		System.out.println(id.getId());
-		id.setTitle("dddd");
-		id.setCategory_code(10);
-		id.setFromurl("ddd");
-		id.setCoverimage("ddd");
-		int count = messageDao.updateOne(id);
-		System.out.println(count);
-		// ListService listService = new ListService();
-		// List<GirlInfo> lists = listService.queryGirlInfoList(1, 1, 20);
-		// System.out.println(lists.size());
-		// System.out.println(lists.get(0).getGirlImages());
-		// GirlInfoDao messageDao = new GirlInfoDao();
-		// GirlInfo message = new GirlInfo();
-		// message.setCategory_code(1);
-		// message.setFromurl("再次测试ddddddd");
-		// message.setTitle("title标题");
-		// message.setCoverimage("coverimage");
-		// List<GirlImage> girlImages = new ArrayList<GirlImage>();
-		// GirlImage girlImage = new GirlImage();
-		// // girlImage.setGirlinfo_id(2);
-		// girlImage.setImageurl("再次测试皮赖难过ddddd");
-		// girlImages.add(girlImage);
-		// girlImages.add(girlImage);
-		// // girlImages.add(girlImage);
-		// message.setGirlImages(girlImages);
-		// messageDao.insertOne(message);
-		// GirlInfo girlInfo=messageDao.queryGirlInfoById(1);
-		// System.out.println(new Gson().toJson(girlInfo));
-
-	}
-
-	public static void main(String[] args) {
-		GroupImageInfoDao messageDao = new GroupImageInfoDao();
-		messageDao.open10RecordsByCategoryCode(70);
-	}
-
-	public static void logintext() {
-		AdministratorDao administratorDao = new AdministratorDao();
-		Administrator message = new Administrator();
-		message.setPassword("cgp888");
-		message.setUsername("cgpllx");
-
-		int count = administratorDao.count(message);
-		System.out.println(count);
-	}
-
+	 
+ 
 	@Override
 	public boolean shouldSkipClass(Class<?> arg0) {
 		// TODO Auto-generated method stub

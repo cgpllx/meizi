@@ -13,4 +13,9 @@ public interface IImage {
 	public void insertReplace(List<Image> images);
 	public int countByGroup(int groupId);
 	public int deleteByGid(int gid);//根据gid 删除image
+	public List<Image> qureyAllImages();
+	public void updateLocalImage(Image image);
+	public void updatePixel(Image image);
+	public Image qureyImageByUrl(String  imageurl);
+	
 }

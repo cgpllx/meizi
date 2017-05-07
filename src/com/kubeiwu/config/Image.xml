@@ -7,6 +7,8 @@
 		<id column="GID" jdbcType="INTEGER" property="id" />
 		<result column="IMAGEURL" jdbcType="VARCHAR" property="imageurl" />
 		<result column="GROUPIMAGEINFO_ID" jdbcType="INTEGER" property="groupimageinfo_id" />
+		<result column="LocalPic" jdbcType="VARCHAR" property="localpic" />
+	<!-- 	<result column="PIXEL" jdbcType="VARCHAR" property="pixel" /> -->
 	</resultMap>
 	<!-- insert 插入 replace 替换插入 -->
 	<insert id="insertOne" parameterType="com.kubeiwu.bean.Image">
@@ -41,4 +43,36 @@
 		delete from IMAGE where
 		GROUPIMAGEINFO_ID = #{_parameter}
 	</delete>
+	<select id="qureyAllImages" resultMap="ImageResult">
+		select ID, IMAGEURL,GROUPIMAGEINFO_ID, LocalPic 
+		from
+		IMAGE
+	  	<where>
+	  	ID =623400
+			<!-- ISNULL(LocalPic) -->
+		</where>  
+	
+	</select>
+		<select id="qureyImageByUrl" parameterType="String" resultMap="ImageResult">
+		select ID, IMAGEURL,GROUPIMAGEINFO_ID, LocalPic 
+		from
+		IMAGE
+	  	<where>
+	  	IMAGEURL =#{_parameter}
+			<!-- ISNULL(LocalPic) -->
+		</where>  
+	
+	</select>
+		<update id="updateLocalImage" parameterType="com.kubeiwu.bean.Image">
+		update IMAGE
+		set
+		LocalPic=#{localpic} where
+		ID=#{id}
+	</update>
+		<update id="updatePixel" parameterType="com.kubeiwu.bean.Image">
+		update IMAGE
+		set
+		PIXEL=#{pixel} where
+		ID=#{id}
+	</update>
 </mapper>

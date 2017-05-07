@@ -18,6 +18,7 @@
 		<result column="ISHOT" jdbcType="BOOLEAN" property="ishot" />
 		<result column="CATEGORY_CODE" jdbcType="INTEGER" property="category_code" />
 		<result column="COVERIMAGE" jdbcType="INTEGER" property="coverimage" />
+		<result column="LOCALCOVERIMAGE" jdbcType="VARCHAR" property="localcoverimage" />
 		<result column="PICCOUNT" jdbcType="INTEGER" property="piccount" />
 		<result column="PIXEL" jdbcType="VARCHAR" property="pixel" />
 		<result column="TIME" jdbcType="BIGINT" property="time" />
@@ -27,7 +28,7 @@
 	<!-- parameterType用于传参，如果只有一个参数可写成="String" -->
 	<select id="queryGroupImageInfoList" parameterType="com.kubeiwu.bean.RequestListPara"
 		resultMap="GroupImageInfoResult">
-		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE ,PICCOUNT,PIXEL
+		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE , LOCALCOVERIMAGE ,PICCOUNT,PIXEL
 		from
 		GROUPIMAGEINFO
 		<where>
@@ -38,7 +39,7 @@
 	<!-- parameterType用于传参，如果只有一个参数可写成="String" -->
 	<select id="queryGroupImageInfoListByHot" parameterType="com.kubeiwu.bean.RequestListPara"
 		resultMap="GroupImageInfoResult">
-		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE ,PICCOUNT,PIXEL
+		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE ,LOCALCOVERIMAGE,PICCOUNT,PIXEL
 		from
 		GROUPIMAGEINFO
 		<where>
@@ -46,10 +47,20 @@
 		</where>
 		order by TIME desc limit #{dbIndex},#{pageCount}
 	</select>
+	<select id="queryGroupImageInfoListByNew" parameterType="com.kubeiwu.bean.RequestListPara"
+		resultMap="GroupImageInfoResult">
+		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE ,LOCALCOVERIMAGE,PICCOUNT,PIXEL
+		from
+		GROUPIMAGEINFO
+		<where>
+			 STATUS = 1
+		</where>
+		order by TIME desc limit #{dbIndex},#{pageCount}
+	</select>
 	<!-- STATUS = 1 没有这个限制 -->
 	<select id="adminQueryGroupImageInfoList" parameterType="com.kubeiwu.bean.RequestListPara"
 		resultMap="GroupImageInfoResult">
-		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE
+		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE,LOCALCOVERIMAGE
 		,PICCOUNT,PIXEL,STATUS
 		from
 		GROUPIMAGEINFO
@@ -60,11 +71,12 @@
 	</select>
 	<select id="queryGroupImageInfoListByWhere" parameterType="String"
 		resultMap="GroupImageInfoResult">
-		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE
+		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE,LOCALCOVERIMAGE
 		,PICCOUNT,PIXEL
 		from
-		GROUPIMAGEINFO where #{_parameter}
-		AND STATUS = 1
+		<!-- GROUPIMAGEINFO where #{_parameter} -->
+		GROUPIMAGEINFO where ISNULL(localcoverimage)
+	<!-- 	AND STATUS = 1 -->
 		order by TIME desc
 		limit 0,10000000000
 	</select>
@@ -142,6 +154,11 @@
 		PIXEL=#{pixel} where
 		ID=#{id}
 	</update>
+	<update id="updateLocalcoverimage" parameterType="com.kubeiwu.bean.GroupImageInfo">
+		update GROUPIMAGEINFO set
+		LOCALCOVERIMAGE=#{localcoverimage} where
+		ID=#{id}
+	</update>
 	<update id="updatePiccount" parameterType="com.kubeiwu.bean.GroupImageInfo">
 		update GROUPIMAGEINFO
 		set
@@ -188,7 +205,7 @@
 		GROUPIMAGEINFO
 		where CATEGORY_CODE=#{_parameter} AND STATUS = 0 order
 		by TIME asc
-		limit 0,3) a
+		limit 0,25) a
 		)
 	</update>
 	<!--关闭全部的 -->

@@ -201,6 +201,29 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 
 		return -1;
 	}
+	
+ 
+
+	@Override
+	public int updateLocalcoverimage(GroupImageInfo message) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = BACCESS.getSqlSession();
+
+			IGroupImageInfo iGirlInfo = sqlSession.getMapper(IGroupImageInfo.class);
+			iGirlInfo.updateLocalcoverimage(message);
+			sqlSession.commit();
+			return 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+
+		return -1;
+	}
 
 	public static void main11(String[] args) {
 		System.out.println("lists=" + 11);
@@ -459,6 +482,25 @@ public class GroupImageInfoDao implements Dao, IGroupImageInfo {
 			sqlSession = BACCESS.getSqlSession();// 加载配置信息，Mybatis中相关的类Configuration
 			IGroupImageInfo girlInfo = sqlSession.getMapper(IGroupImageInfo.class);
 			messageList = girlInfo.queryGroupImageInfoListByHot(parameter);
+			// Thread.sleep(100);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+		return messageList;
+	}
+	
+	@Override
+	public List<GroupImageInfo> queryGroupImageInfoListByNew(RequestListPara parameter) {
+		List<GroupImageInfo> messageList = new ArrayList<GroupImageInfo>();
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = BACCESS.getSqlSession();// 加载配置信息，Mybatis中相关的类Configuration
+			IGroupImageInfo girlInfo = sqlSession.getMapper(IGroupImageInfo.class);
+			messageList = girlInfo.queryGroupImageInfoListByNew(parameter);
 			// Thread.sleep(100);
 		} catch (Exception e) {
 			e.printStackTrace();

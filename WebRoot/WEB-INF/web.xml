@@ -132,6 +132,16 @@
 		<servlet-name>groupImageInfoListByHot</servlet-name>
 		<url-pattern>/groupImageInfoListByHot</url-pattern>
 	</servlet-mapping>
+	 			<!-- 热门列表-->
+	<servlet>
+		<servlet-name>groupImageInfoListByNew</servlet-name>
+		<servlet-class>com.kubeiwu.servlet.GroupImageInfoListByNewServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>groupImageInfoListByNew</servlet-name>
+		<url-pattern>/groupImageInfoListByNew</url-pattern>
+	</servlet-mapping>
 	
 	 			<!--删除一个图组-->
 	<servlet>

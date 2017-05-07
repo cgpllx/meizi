@@ -25,8 +25,20 @@ public class GroupImageInfo {
 	private String pixel;//尺寸
 	@Expose
 	private boolean status;//尺寸
+	@Expose
+	private String localcoverimage;//尺寸
+	
+ 
 	
 	
+	public String getLocalcoverimage() {
+		return localcoverimage;
+	}
+
+	public void setLocalcoverimage(String localcoverimage) {
+		this.localcoverimage = localcoverimage;
+	}
+
 	public boolean isStatus() {
 		return status;
 	}
