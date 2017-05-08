@@ -67,7 +67,7 @@
 		<where>
 			CATEGORY_CODE=#{category_code}
 		</where>
-		order by TIME asc limit #{dbIndex},#{pageCount}
+		order by STATUS desc,TIME desc limit #{dbIndex},#{pageCount}
 	</select>
 	<select id="queryGroupImageInfoListByWhere" parameterType="String"
 		resultMap="GroupImageInfoResult">
@@ -78,7 +78,7 @@
 		GROUPIMAGEINFO where ISNULL(localcoverimage)
 	<!-- 	AND STATUS = 1 -->
 		order by TIME desc
-		limit 0,10000000000
+		limit 0,1
 	</select>
 	<!-- "category_code = " + id + " and status = 0" -->
 	<!-- 查询单个的详情 -->

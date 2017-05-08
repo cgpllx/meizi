@@ -22,11 +22,11 @@
 	<select id="queryADInfoList" resultMap="ADInfoResult">
 		select ID,AD_UNIT_ID_APPLICATIONCODE,AD_UNIT_ID_NATIVE, AD_UNIT_ID_BANNER ,AD_UNIT_ID_INTERSTITIAL
 		from
-		ADInfo
+		ADINFO
 		<where>
 			STATUS = 1
 		</where>
-	<!-- 	order by ID desc -->
+		order by ID desc
 	</select>
 	
 </mapper>
