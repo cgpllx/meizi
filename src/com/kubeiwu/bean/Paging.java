@@ -72,9 +72,9 @@ public class Paging<T> {
 		
 		// 设置当前页数
 		// 总页数小于当前页数，应将当前页数设置为总页数
-		if(this.totalPage < this.currentPageNo) {
-			this.currentPageNo = this.totalPage;
-		}
+//		if(this.totalPage < this.currentPageNo) {
+//			this.currentPageNo = this.totalPage;
+//		}
 		// 当前页数小于1设置为1
 		if(this.currentPageNo < 1) {
 			this.currentPageNo = 1;

@@ -28,7 +28,7 @@
 	<!-- parameterType用于传参，如果只有一个参数可写成="String" -->
 	<select id="queryGroupImageInfoList" parameterType="com.kubeiwu.bean.RequestListPara"
 		resultMap="GroupImageInfoResult">
-		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE , LOCALCOVERIMAGE ,PICCOUNT,PIXEL
+		select ID,TITLE,FROMURL, CATEGORY_CODE ,COVERIMAGE ,LOCALCOVERIMAGE ,PICCOUNT,PIXEL
 		from
 		GROUPIMAGEINFO
 		<where>

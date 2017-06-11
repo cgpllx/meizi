@@ -38,12 +38,11 @@ import com.kubeiwu.service.groupimageinfo.GroupImageInfoListServiceByNew;
  */
 @SuppressWarnings("serial")
 public class GroupImageInfoListByNewServlet extends HttpServlet {
+	GroupImageInfoListServiceByNew listservice ;
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("application/json;charset=utf-8");
 		ServletOutputStream pwout = resp.getOutputStream();
-
-		GroupImageInfoListServiceByNew listservice = new GroupImageInfoListServiceByNew();
 		try {
 			byte[] result = listservice.handleRequest(req,resp).getBytes("UTF-8");
 			// resp.setHeader("encryption", "1");
@@ -71,6 +70,12 @@ public class GroupImageInfoListByNewServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		this.doGet(req, resp);
+	}
+	
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		  listservice = new GroupImageInfoListServiceByNew();
 	}
 	
 }

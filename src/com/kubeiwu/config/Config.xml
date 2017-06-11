@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kubeiwu.dao.IConfig">
+	<!-- 600秒刷新一次缓存 -->
+	<cache eviction="FIFO" flushInterval="600000" size="512"
+		readOnly="true" />
+
+	<!-- 配置数据库字段与JavaBean属性值对应关系 -->
+	<resultMap type="com.kubeiwu.bean.Config" id="ConfigResult">
+		<id column="ID" jdbcType="INTEGER" property="id" />
+		<result column="FINALPAGECOUNT" jdbcType="INTEGER" property="finalpagecount" />
+		<result column="INDEXFINALPAGECOUNT" jdbcType="INTEGER" property="indexfinalpagecount" />
+		<result column="STATUS" jdbcType="INTEGER" property="status" />
+	</resultMap>
+	<!-- parameterType用于传参，如果只有一个参数可写成="String" -->
+	<select id="queryConfigList" resultMap="ConfigResult">
+		select ID,FINALPAGECOUNT,INDEXFINALPAGECOUNT
+		from
+		CONFIG
+		<where>
+			STATUS = 1
+		</where>
+		order by ID desc
+	</select>
+	
+</mapper>

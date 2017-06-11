@@ -7,22 +7,12 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.zip.GZIPOutputStream;
- 
-
-
-
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
- 
-
-
-
-
-
 
 import com.kubeiwu.service.groupimageinfo.GroupImageInfoListService;
 
@@ -32,16 +22,17 @@ import com.kubeiwu.service.groupimageinfo.GroupImageInfoListService;
  */
 @SuppressWarnings("serial")
 public class GroupImageInfoListServlet extends HttpServlet {
+	GroupImageInfoListService listservice ;
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("application/json;charset=utf-8");
 		ServletOutputStream pwout = resp.getOutputStream();
 
-		GroupImageInfoListService listservice = new GroupImageInfoListService();
+//		GroupImageInfoListService listservice = new GroupImageInfoListService();
 		try {
 			// byte[] result =
 			// AESUtil.encode(listservice.handleRequest(req)).getBytes("UTF-8");
-			byte[] result = listservice.handleRequest(req,resp).getBytes("UTF-8");
+			byte[] result = listservice.handleRequest(req, resp).getBytes("UTF-8");
 			// resp.setHeader("encryption", "1");
 			String accept_encoding = req.getHeader("Accept-Encoding");
 			System.out.println("gzip=" + accept_encoding);
@@ -63,15 +54,23 @@ public class GroupImageInfoListServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-	 public String toGMTString() {
-	        SimpleDateFormat sdf = new SimpleDateFormat("d MMM y HH:mm:ss 'GMT'", Locale.US);
-	        TimeZone gmtZone = TimeZone.getTimeZone("GMT");
-	        sdf.setTimeZone(gmtZone);
-	        return sdf.format(new Date());
-	    }
+
+	public String toGMTString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("d MMM y HH:mm:ss 'GMT'", Locale.US);
+		TimeZone gmtZone = TimeZone.getTimeZone("GMT");
+		sdf.setTimeZone(gmtZone);
+		return sdf.format(new Date());
+	}
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		this.doGet(req, resp);
 	}
-	
+
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		listservice=new GroupImageInfoListService();
+	}
+
 }

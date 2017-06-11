@@ -10,5 +10,5 @@ public interface Service {// 不导出实体中没有用@Expose注解的属性
 	Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 	int DEFAULT_PAGE_COUNT = 20;
 
-	String handleRequest(HttpServletRequest req,HttpServletResponse resp);
+	String handleRequest(HttpServletRequest req, HttpServletResponse resp);
 }

@@ -19,12 +19,14 @@ import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kubeiwu.bean.Administrator;
+import com.kubeiwu.bean.Config;
 import com.kubeiwu.bean.GroupImageInfo;
 import com.kubeiwu.bean.Paging;
 import com.kubeiwu.bean.RequestListPara;
 import com.kubeiwu.bean.ResponseInfo;
 import com.kubeiwu.constant.ResponseCode;
 import com.kubeiwu.dao.AdministratorDao;
+import com.kubeiwu.dao.ConfigDao;
 import com.kubeiwu.dao.GroupImageInfoDao;
 
 /**
@@ -34,6 +36,16 @@ import com.kubeiwu.dao.GroupImageInfoDao;
  */
 public class GroupImageInfoListService implements PublicService, ExclusionStrategy {
 	Gson GSON = new GsonBuilder().setExclusionStrategies(this).create();
+	public final int FINALPAGECOUNT;
+
+	public GroupImageInfoListService() {
+		List<Config> list = CONFIGDAO.queryConfigList();
+		if (list != null && list.size() > 0) {
+			FINALPAGECOUNT = list.get(0).getFinalpagecount();
+		} else {
+			FINALPAGECOUNT = 1;
+		}
+	}
 
 	@Target(ElementType.FIELD)
 	@Retention(RetentionPolicy.RUNTIME)
@@ -55,7 +67,7 @@ public class GroupImageInfoListService implements PublicService, ExclusionStrate
 		return GROUPIMAGEINFODAO.count(categoryId);
 	}
 
-	public String handleRequest(HttpServletRequest req,HttpServletResponse resp) {
+	public String handleRequest(HttpServletRequest req, HttpServletResponse resp) {
 
 		// ResponseInfo<List<GroupImageInfo>> responseInfo = new
 		// ResponseInfo<List<GroupImageInfo>>();
@@ -65,14 +77,16 @@ public class GroupImageInfoListService implements PublicService, ExclusionStrate
 		String category = req.getParameter("category");
 		String page = req.getParameter("page");
 		String count = req.getParameter("count");
+		String time = req.getParameter("time");
 
 		try {
 			int category_code;
 			int pageCount;
 			int currentPage;
+			int timeIndex;
 
 			if (category == null) {
-				category_code = 70;
+				category_code = 300;
 			} else {
 				Pattern pattern = Pattern.compile("[0-9]{1,9}");// 只能为0-9，最长9位数，因为是int
 				if (!pattern.matcher(category).matches()) {
@@ -90,15 +104,29 @@ public class GroupImageInfoListService implements PublicService, ExclusionStrate
 			} else {
 				currentPage = 1;
 			}
+			if (time != null && !time.equals("")) {
+				timeIndex = Integer.parseInt(time);
+			} else {
+				timeIndex = 1;
+			}
+			int totalCount = getTotalCount(category_code);
 
-			List<GroupImageInfo> groupImageInfos = queryGirlInfoList(category_code, currentPage, pageCount);
-			Paging<List<GroupImageInfo>> paging = new Paging<List<GroupImageInfo>>(getTotalCount(category_code), currentPage, pageCount);
-			paging.setData(groupImageInfos);
-			paging.setTotalCount(getTotalCount(category_code));
+			int timecount = totalCount / pageCount / FINALPAGECOUNT;
+			if (timecount == 0) {
+				timecount = 1;
+			}
+			List<Config> list = CONFIGDAO.queryConfigList();
+			int compressIndex = timeIndex % (timecount);// 这个会小于
+			Paging<List<GroupImageInfo>> paging = new Paging<List<GroupImageInfo>>(FINALPAGECOUNT * pageCount, currentPage, pageCount);
+			if (currentPage <= FINALPAGECOUNT) {
+				List<GroupImageInfo> groupImageInfos = queryGirlInfoList(category_code, compressIndex * FINALPAGECOUNT + currentPage, pageCount);
+				paging.setData(groupImageInfos);
+			}
+			paging.setTotalPage(FINALPAGECOUNT);
 			responseInfo.setData(paging);
 			responseInfo.setCode(ResponseCode.SUCCESS_CODE);
 			responseInfo.setDesc("正确处理");
-			handleupdate(req, category_code);
+			// handleupdate(req, category_code);
 			resp.setHeader("Cache-Control", "max-age=36000");
 			resp.setHeader("Date", Utils.toGMTString());
 		} catch (Exception e) {
@@ -109,9 +137,10 @@ public class GroupImageInfoListService implements PublicService, ExclusionStrate
 		return GSON.toJson(responseInfo);
 	}
 
-	void handleupdate(HttpServletRequest req,int categoryCode) {
+	void handleupdate(HttpServletRequest req, int categoryCode) {
 		ServletContext servletContext = req.getServletContext();
-		Object lastDay = servletContext.getAttribute(categoryCode+"");// 上次更新的时间 day
+		Object lastDay = servletContext.getAttribute(categoryCode + "");// 上次更新的时间
+																		// day
 		Calendar c = Calendar.getInstance();// 可以对每个时间域单独修改
 		int date = c.get(Calendar.DATE);
 		String nowDay = String.valueOf(date);
@@ -119,59 +148,10 @@ public class GroupImageInfoListService implements PublicService, ExclusionStrate
 		} else {
 			int code = GROUPIMAGEINFODAO.open10RecordsByCategoryCode(categoryCode);
 			if (code != -1) {
-				servletContext.setAttribute(categoryCode+"", nowDay);
+				servletContext.setAttribute(categoryCode + "", nowDay);
 			}
-			System.out.println("更新了10条 code＝"+code);
+			System.out.println("更新了10条 code＝" + code);
 		}
-	}
-
-	public static void main3(String[] args) {
-		GroupImageInfoDao messageDao = new GroupImageInfoDao();
-		GroupImageInfo id = messageDao.queryGroupImageInfoByFromUrl("http://m.mm131.com/mingxing/38.html");
-		System.out.println(id.getId());
-		id.setTitle("dddd");
-		id.setCategory_code(10);
-		id.setFromurl("ddd");
-		id.setCoverimage("ddd");
-		int count = messageDao.updateOne(id);
-		System.out.println(count);
-		// ListService listService = new ListService();
-		// List<GirlInfo> lists = listService.queryGirlInfoList(1, 1, 20);
-		// System.out.println(lists.size());
-		// System.out.println(lists.get(0).getGirlImages());
-		// GirlInfoDao messageDao = new GirlInfoDao();
-		// GirlInfo message = new GirlInfo();
-		// message.setCategory_code(1);
-		// message.setFromurl("再次测试ddddddd");
-		// message.setTitle("title标题");
-		// message.setCoverimage("coverimage");
-		// List<GirlImage> girlImages = new ArrayList<GirlImage>();
-		// GirlImage girlImage = new GirlImage();
-		// // girlImage.setGirlinfo_id(2);
-		// girlImage.setImageurl("再次测试皮赖难过ddddd");
-		// girlImages.add(girlImage);
-		// girlImages.add(girlImage);
-		// // girlImages.add(girlImage);
-		// message.setGirlImages(girlImages);
-		// messageDao.insertOne(message);
-		// GirlInfo girlInfo=messageDao.queryGirlInfoById(1);
-		// System.out.println(new Gson().toJson(girlInfo));
-
-	}
-
-	public static void main(String[] args) {
-		GroupImageInfoDao messageDao = new GroupImageInfoDao();
-		messageDao.open10RecordsByCategoryCode(70);
-	}
-
-	public static void logintext() {
-		AdministratorDao administratorDao = new AdministratorDao();
-		Administrator message = new Administrator();
-		message.setPassword("cgp888");
-		message.setUsername("cgpllx");
-
-		int count = administratorDao.count(message);
-		System.out.println(count);
 	}
 
 	@Override
