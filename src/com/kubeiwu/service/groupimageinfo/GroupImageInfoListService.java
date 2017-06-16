@@ -115,7 +115,7 @@ public class GroupImageInfoListService implements PublicService, ExclusionStrate
 			if (timecount == 0) {
 				timecount = 1;
 			}
-			List<Config> list = CONFIGDAO.queryConfigList();
+//			List<Config> list = CONFIGDAO.queryConfigList();
 			int compressIndex = timeIndex % (timecount);// 这个会小于
 			Paging<List<GroupImageInfo>> paging = new Paging<List<GroupImageInfo>>(FINALPAGECOUNT * pageCount, currentPage, pageCount);
 			if (currentPage <= FINALPAGECOUNT) {

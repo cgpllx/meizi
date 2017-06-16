@@ -15,7 +15,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.ibatis.scripting.xmltags.WhereSqlNode;
-import org.eclipse.jdt.internal.compiler.ast.ContinueStatement;
 
 import com.kubeiwu.bean.GroupImageInfo;
 import com.kubeiwu.bean.Image;
