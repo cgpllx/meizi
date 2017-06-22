@@ -1,16 +1,22 @@
 package com.kubeiwu.servlet;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.zip.GZIPOutputStream;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import utils.HeaderUtils;
 import utils.Utils;
 
+import com.kubeiwu.service.Service;
 import com.kubeiwu.service.category.CategoryListService;
+import com.kubeiwu.service.groupimageinfo.ADInfoService;
 
 /**
  *
@@ -18,21 +24,46 @@ import com.kubeiwu.service.category.CategoryListService;
  */
 @SuppressWarnings("serial")
 public class CategoryListServlet extends HttpServlet {
+
+	Service service;
+
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		resp.setContentType("application/json;charset=utf-8");
-		PrintWriter out = resp.getWriter();
+		ServletOutputStream pwout = resp.getOutputStream();
 
-		CategoryListService listservice = new CategoryListService();
-		out.write(listservice.handleRequest(req,resp));
+		try {
+			byte[] result = HeaderUtils.buildBytes(req, resp, service);
+			String accept_encoding = req.getHeader("Accept-Encoding");
+			if (accept_encoding != null
+					&& accept_encoding.equalsIgnoreCase("gzip")) {
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				GZIPOutputStream gout = new GZIPOutputStream(out);
+				gout.write(result);
+				gout.close();
+				result = out.toByteArray();
+				resp.setHeader("Content-Encoding", "gzip");
+				resp.setHeader("Content-Length", result.length + "");
+			}
 
-		out.flush();
-		out.close();
-
+			pwout.write(result);
+			pwout.flush();
+			pwout.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		this.doGet(req, resp);
+	}
+
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		service = new CategoryListService();
 	}
 }
