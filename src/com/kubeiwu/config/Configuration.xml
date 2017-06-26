@@ -30,13 +30,9 @@
 				<property name="username" value="10412734edd9db" />
 				<property name="password" value="YVQAukwj2318" /> -->
 				
-<!-- 				<property name="url" value="jdbc:mysql://localhost:8889/meizitu?useUnicode=true&amp;characterEncoding=utf8" 
-					/> <property name="username" value="root" /> 
-				<property name="password" value="root" /> -->
+ 
 				
- 	<property name="url" value="jdbc:mysql://13.124.7.219:3306/meizitu?useUnicode=true&amp;characterEncoding=utf8"   
- 				/> <property name="username" value="root" />   
- 				<property name="password" value="ffvvv_cc@0405" />  
+
 				
 <!-- 					<property name="url" value="jdbc:mysql://localhost:3306/meizitu?useUnicode=true&amp;characterEncoding=utf8"  -->
 <!-- 					/> <property name="username" value="root" />  -->
