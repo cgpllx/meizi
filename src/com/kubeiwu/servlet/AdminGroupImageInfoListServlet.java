@@ -15,32 +15,31 @@ import utils.AES;
 import utils.AESUtil;
 import utils.Base64Util;
 import utils.EncryptUtil;
+import utils.HeaderUtils;
 import utils.SimpleCrypto;
 
 import com.kubeiwu.service.Service;
+import com.kubeiwu.service.groupimageinfo.ADInfoService;
 import com.kubeiwu.service.groupimageinfo.AdminGroupImageInfoListService;
 import com.kubeiwu.service.groupimageinfo.GroupImageInfoListService;
 
  
 @SuppressWarnings("serial")
 public class AdminGroupImageInfoListServlet extends HttpServlet {
+	Service service;
+
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		resp.setContentType("application/json;charset=utf-8");
 		ServletOutputStream pwout = resp.getOutputStream();
 
-		Service listservice = new AdminGroupImageInfoListService();
 		try {
-//			byte[] result = AESUtil.encode(listservice.handleRequest(req)).getBytes("UTF-8");
-			byte[] result =listservice.handleRequest(req,resp).getBytes("UTF-8");
-
-//			resp.setHeader("encryption", "1");
-			
+			byte[] result=HeaderUtils.buildBytes(req, resp, service);
 			String accept_encoding = req.getHeader("Accept-Encoding");
-			System.out.println("gzip="+accept_encoding);
-			if (accept_encoding != null && accept_encoding.equalsIgnoreCase("gzip")) {
+			if (accept_encoding != null
+					&& accept_encoding.equalsIgnoreCase("gzip")) {
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				System.out.println("gzip="+accept_encoding);
 				GZIPOutputStream gout = new GZIPOutputStream(out);
 				gout.write(result);
 				gout.close();
@@ -48,7 +47,7 @@ public class AdminGroupImageInfoListServlet extends HttpServlet {
 				resp.setHeader("Content-Encoding", "gzip");
 				resp.setHeader("Content-Length", result.length + "");
 			}
-			 
+
 			pwout.write(result);
 			pwout.flush();
 			pwout.close();
@@ -58,7 +57,14 @@ public class AdminGroupImageInfoListServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		this.doGet(req, resp);
+	}
+
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		service = new AdminGroupImageInfoListService();
 	}
 }

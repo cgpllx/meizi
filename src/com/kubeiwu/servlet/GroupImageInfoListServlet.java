@@ -14,31 +14,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import utils.AESUtil;
+import utils.HeaderUtils;
+
+import com.kubeiwu.service.Service;
 import com.kubeiwu.service.groupimageinfo.GroupImageInfoListService;
 
 /**
  * 每天第一次访问后会更新部分数据，达到自动更新数据
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class GroupImageInfoListServlet extends HttpServlet {
-	GroupImageInfoListService listservice ;
+	 Service service;
+
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		resp.setContentType("application/json;charset=utf-8");
 		ServletOutputStream pwout = resp.getOutputStream();
 
-//		GroupImageInfoListService listservice = new GroupImageInfoListService();
 		try {
-			// byte[] result =
-			// AESUtil.encode(listservice.handleRequest(req)).getBytes("UTF-8");
-			byte[] result = listservice.handleRequest(req, resp).getBytes("UTF-8");
-			// resp.setHeader("encryption", "1");
+			byte[] result=HeaderUtils.buildBytes(req, resp, service);
 			String accept_encoding = req.getHeader("Accept-Encoding");
-			System.out.println("gzip=" + accept_encoding);
-			if (accept_encoding != null && accept_encoding.equalsIgnoreCase("gzip")) {
+			if (accept_encoding != null
+					&& accept_encoding.equalsIgnoreCase("gzip")) {
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				System.out.println("gzip=" + accept_encoding);
 				GZIPOutputStream gout = new GZIPOutputStream(out);
 				gout.write(result);
 				gout.close();
@@ -55,22 +56,16 @@ public class GroupImageInfoListServlet extends HttpServlet {
 		}
 	}
 
-	public String toGMTString() {
-		SimpleDateFormat sdf = new SimpleDateFormat("d MMM y HH:mm:ss 'GMT'", Locale.US);
-		TimeZone gmtZone = TimeZone.getTimeZone("GMT");
-		sdf.setTimeZone(gmtZone);
-		return sdf.format(new Date());
-	}
-
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		this.doGet(req, resp);
 	}
 
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		listservice=new GroupImageInfoListService();
+		service = new GroupImageInfoListService();
 	}
 
 }

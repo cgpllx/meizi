@@ -1,5 +1,5 @@
 <%@page import="org.apache.ibatis.session.SqlSession"%>
-<%@page import="org.apache.catalina.Session"%>
+<%-- <%@page import="org.apache.catalina.Session"%> --%>
 <%@page import="com.kubeiwu.bean.RequestListPara"%>
 <%@page import="com.kubeiwu.dao.IGroupImageInfo"%>
 <%@page import="org.apache.ibatis.session.SqlSessionFactoryBuilder"%>
