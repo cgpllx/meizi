@@ -47,10 +47,10 @@
 		select ID, IMAGEURL,GROUPIMAGEINFO_ID, LocalPic 
 		from
 		IMAGE
-	  	<where>
-	  	ID =623400
-			<!-- ISNULL(LocalPic) -->
-		</where>  
+	 <!--  	<where>
+	  	ID >938279
+			ISNULL(LocalPic)
+		</where>   -->
 	
 	</select>
 		<select id="qureyImageByUrl" parameterType="String" resultMap="ImageResult">

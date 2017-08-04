@@ -24,7 +24,7 @@ import com.kubeiwu.dao.GroupImageInfoDao;
 import com.kubeiwu.dao.ImageDao;
 
 public class DownImage {
-	public static void main(String[] args) {
+	public static void main1(String[] args) {
 		GroupImageInfoDao groupImageInfoDao = new GroupImageInfoDao();
 		// groupImageInfoDao.up
 		ImageDao imagedao = new ImageDao();
@@ -87,36 +87,36 @@ public class DownImage {
 		}
 	}
 
-	public static void main1(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException {
 		// LinkedBlockingDeque<Runnable> queue = new
 		// LinkedBlockingDeque<Runnable>();
-		ScheduledExecutorService scheduledThreadPool1 = Executors.newScheduledThreadPool(1);
-		ScheduledExecutorService scheduledThreadPool2 = Executors.newScheduledThreadPool(1);
-		ScheduledExecutorService scheduledThreadPool3 = Executors.newScheduledThreadPool(1);
-		ScheduledExecutorService scheduledThreadPool4 = Executors.newScheduledThreadPool(1);
-		ScheduledExecutorService scheduledThreadPool5 = Executors.newScheduledThreadPool(1);
-		ScheduledExecutorService scheduledThreadPool6 = Executors.newScheduledThreadPool(1);
-		ScheduledExecutorService scheduledThreadPool7 = Executors.newScheduledThreadPool(1);
-		ScheduledExecutorService scheduledThreadPool8 = Executors.newScheduledThreadPool(1);
-		ScheduledExecutorService scheduledThreadPool9 = Executors.newScheduledThreadPool(1);
-		ScheduledExecutorService scheduledThreadPool11 = Executors.newScheduledThreadPool(1);
-		ScheduledExecutorService scheduledThreadPool12 = Executors.newScheduledThreadPool(1);
-		ScheduledExecutorService scheduledThreadPool13 = Executors.newScheduledThreadPool(1);
-		ScheduledExecutorService scheduledThreadPool14 = Executors.newScheduledThreadPool(1);
-		final LinkedBlockingDeque<ScheduledExecutorService> queueRun = new LinkedBlockingDeque<ScheduledExecutorService>();
-		queueRun.add(scheduledThreadPool1);
-		queueRun.add(scheduledThreadPool2);
-		queueRun.add(scheduledThreadPool3);
-		queueRun.add(scheduledThreadPool4);
-		queueRun.add(scheduledThreadPool5);
-		queueRun.add(scheduledThreadPool6);
-		queueRun.add(scheduledThreadPool7);
-		queueRun.add(scheduledThreadPool8);
-		queueRun.add(scheduledThreadPool9);
-		queueRun.add(scheduledThreadPool11);
-		queueRun.add(scheduledThreadPool12);
-		queueRun.add(scheduledThreadPool13);
-		queueRun.add(scheduledThreadPool14);
+//		ScheduledExecutorService scheduledThreadPool1 = Executors.newScheduledThreadPool(1);
+//		ScheduledExecutorService scheduledThreadPool2 = Executors.newScheduledThreadPool(1);
+//		ScheduledExecutorService scheduledThreadPool3 = Executors.newScheduledThreadPool(1);
+//		ScheduledExecutorService scheduledThreadPool4 = Executors.newScheduledThreadPool(1);
+//		ScheduledExecutorService scheduledThreadPool5 = Executors.newScheduledThreadPool(1);
+//		ScheduledExecutorService scheduledThreadPool6 = Executors.newScheduledThreadPool(1);
+//		ScheduledExecutorService scheduledThreadPool7 = Executors.newScheduledThreadPool(1);
+//		ScheduledExecutorService scheduledThreadPool8 = Executors.newScheduledThreadPool(1);
+//		ScheduledExecutorService scheduledThreadPool9 = Executors.newScheduledThreadPool(1);
+//		ScheduledExecutorService scheduledThreadPool11 = Executors.newScheduledThreadPool(1);
+//		ScheduledExecutorService scheduledThreadPool12 = Executors.newScheduledThreadPool(1);
+//		ScheduledExecutorService scheduledThreadPool13 = Executors.newScheduledThreadPool(1);
+//		ScheduledExecutorService scheduledThreadPool14 = Executors.newScheduledThreadPool(1);
+//		final LinkedBlockingDeque<ScheduledExecutorService> queueRun = new LinkedBlockingDeque<ScheduledExecutorService>();
+//		queueRun.add(scheduledThreadPool1);
+//		queueRun.add(scheduledThreadPool2);
+//		queueRun.add(scheduledThreadPool3);
+//		queueRun.add(scheduledThreadPool4);
+//		queueRun.add(scheduledThreadPool5);
+//		queueRun.add(scheduledThreadPool6);
+//		queueRun.add(scheduledThreadPool7);
+//		queueRun.add(scheduledThreadPool8);
+//		queueRun.add(scheduledThreadPool9);
+//		queueRun.add(scheduledThreadPool11);
+//		queueRun.add(scheduledThreadPool12);
+//		queueRun.add(scheduledThreadPool13);
+//		queueRun.add(scheduledThreadPool14);
 
 		final GroupImageInfoDao groupImageInfoDao = new GroupImageInfoDao();
 		final ImageDao imagedao = new ImageDao();
@@ -124,55 +124,65 @@ public class DownImage {
 		ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(3);
 
 		for (Image image : list) {
-			final ScheduledExecutorService scheduledThreadPoolzzz = queueRun.take();
+//			final ScheduledExecutorService scheduledThreadPoolzzz = queueRun.take();
 			final Image imageold = image;
+			System.out.println("groupImageInfo url=" + imageold.getImageurl());
+			String imageurl = imageold.getImageurl();
+			int id = imageold.getGroupimageinfo_id();
+			// String uuids = UUID.randomUUID().toString();
+
+			String uuids = imageold.getId() + "";
+
+			try {
+				GroupImageInfo groupImageInfo = groupImageInfoDao.queryGroupImageInfoById(imageold.getGroupimageinfo_id());
+				int categoryCode = groupImageInfo.getCategory_code();
+				System.out.println(categoryCode);
+//				if (categoryCode != 320) {
+//					continue;
+//				}
+				
+				try{
+					String relativePath = "/" + categoryCode + "/" + id + "/" + id + "_" + uuids + ".jpg";
+					
+					FileUtils.copyURLToFile(new URL("http://127.0.0.1"+relativePath), new File("/Volumes/备份/images2/" + categoryCode + "/" + id, id + "_" + uuids + ".jpg"));
+					
+					imageold.setLocalpic(relativePath);
+					imagedao.updateLocalImage(imageold);
+				}catch(Exception e){
+//					FileUtils.copyURLToFile(new URL(imageurl), new File("/Volumes/备份/images2/" + categoryCode + "/" + id, id + "_" + uuids + ".jpg"));
+//					String relativePath = "/" + categoryCode + "/" + id + "/" + id + "_" + uuids + ".jpg";
+//					imageold.setLocalpic(relativePath);
+//					imagedao.updateLocalImage(imageold);
+				}
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+//				queueRun.add(scheduledThreadPoolzzz);
+			}
 			Runnable r = new Runnable() {
 				//
 				@Override
 				public void run() {
-					System.out.println("groupImageInfo url=" + imageold.getImageurl());
-					String imageurl = imageold.getImageurl();
-					int id = imageold.getGroupimageinfo_id();
-					// String uuids = UUID.randomUUID().toString();
-
-					String uuids = imageold.getId() + "";
-
-					try {
-						GroupImageInfo groupImageInfo = groupImageInfoDao.queryGroupImageInfoById(imageold.getGroupimageinfo_id());
-						int categoryCode = groupImageInfo.getCategory_code();
-						System.out.println(categoryCode);
-						if (categoryCode != 320) {
-							return;
-						}
-						FileUtils.copyURLToFile(new URL(imageurl), new File("/Users/chenguoping/androidDev/images/" + categoryCode + "/" + id, id + "_" + uuids + ".jpg"));
-						String relativePath = "/" + categoryCode + "/" + id + "/" + id + "_" + uuids + ".jpg";
-						imageold.setLocalpic(relativePath);
-						imagedao.updateLocalImage(imageold);
-					} catch (MalformedURLException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					} finally {
-						queueRun.add(scheduledThreadPoolzzz);
-					}
+					
 
 				}
 			};
 
 			System.out.println("gcccccccccccccc=");
-			scheduledThreadPoolzzz.execute(r);
+//			scheduledThreadPoolzzz.execute(r);
 
 		}
-		while (true) {
-			try {
-				ScheduledExecutorService scheduledThreadPoolzzz = queueRun.take();
-				System.out.println("gcccccccccccccc=");
-				// scheduledThreadPoolzzz.execute(queue.take());
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		while (true) {
+//			try {
+////				ScheduledExecutorService scheduledThreadPoolzzz = queueRun.take();
+//				System.out.println("gcccccccccccccc=");
+//				// scheduledThreadPoolzzz.execute(queue.take());
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 	}
 
 }
