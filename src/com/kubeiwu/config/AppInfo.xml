@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kubeiwu.dao.IAppInfo">
+	<!-- 600秒刷新一次缓存 -->
+	<cache eviction="FIFO" flushInterval="600000" size="512"
+		readOnly="true" />
+
+	<!-- 配置数据库字段与JavaBean属性值对应关系 -->
+	<resultMap type="com.kubeiwu.bean.AppInfo" id="AppInfoResult">
+	<!-- 	<id column="ID" jdbcType="INTEGER" property="id" /> -->
+		<result column="APPLICATIONID" jdbcType="VARCHAR" property="applicationId" />
+		<result column="VERSIONNAME" jdbcType="VARCHAR" property="versionName" />
+		<result column="VERSIONCODE" jdbcType="INTEGER" property="versionCode" />
+		<result column="APKURL" jdbcType="VARCHAR" property="apkUrl" />
+		<result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+		<result column="APPNAME" jdbcType="VARCHAR" property="appName" />
+		<result column="STATUS" jdbcType="INTEGER" property="status" />
+	</resultMap>
+	<!-- parameterType用于传参，如果只有一个参数可写成="String" -->
+	<select id="queryAppInfo"  parameterType="String" resultMap="AppInfoResult">
+		select VERSIONNAME,VERSIONCODE, APKURL ,DESCRIPTION, APPNAME
+		from
+		APPINFO
+		where APPLICATIONID =
+		#{_parameter}
+	</select>
+	
+<!-- 		<select id="queryAppInfo"  parameterType="String" resultType="AppInfoResult">
+		select VERSIONNAME,VERSIONCODE, APKURL ,DESCRIPTION, APPNAME
+		from
+		APPINFO
+		where APPAPPLICATIONID =
+		#{_parameter}
+	</select> -->
+	
+</mapper>

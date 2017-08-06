@@ -9,5 +9,5 @@ import com.kubeiwu.bean.Category;
  * @author  与Category配置文件相对应的接口
  */
 public interface IADInfo {
-	public List<ADInfo> queryADInfoList(); 
+	public List<ADInfo> queryADInfoList(String appApplicationId); 
 }

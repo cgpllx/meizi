@@ -13,6 +13,7 @@ public class ADInfo {
 	@Expose
     String ad_unit_id_interstitial;
     int id;
+    String applicationId;
     
     
 

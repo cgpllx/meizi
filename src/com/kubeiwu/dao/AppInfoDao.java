@@ -6,18 +6,20 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.kubeiwu.bean.ADInfo;
+import com.kubeiwu.bean.AppInfo;
 
-public class ADInfoDao implements IADInfo,Dao{
+public class AppInfoDao implements IAppInfo,Dao{
 
 	@Override
-	public List<ADInfo> queryADInfoList(String appApplicationId) {
-		List<ADInfo> adInfos = new ArrayList<ADInfo>();
+	public List<AppInfo> queryAppInfo(String appApplicationId) {
+		List<AppInfo> adInfos = new ArrayList<AppInfo>();
 		SqlSession sqlSession = null;
 		try {
 			sqlSession = BACCESS.getSqlSession();//
 
-			IADInfo adInfo = sqlSession.getMapper(IADInfo.class);
-			adInfos = adInfo.queryADInfoList(appApplicationId);
+			IAppInfo adInfo = sqlSession.getMapper(IAppInfo.class);
+			 adInfos = adInfo.queryAppInfo(appApplicationId);
+			 
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -25,7 +27,7 @@ public class ADInfoDao implements IADInfo,Dao{
 				sqlSession.close();
 			}
 		}
-		return adInfos;
+		return  adInfos;
 	}
 
 }

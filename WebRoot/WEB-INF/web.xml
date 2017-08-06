@@ -164,5 +164,16 @@
 		<servlet-name>aDInfo</servlet-name>
 		<url-pattern>/adInfo</url-pattern>
 	</servlet-mapping>
+	
+			 <!--appUpdate 信息-->
+	<servlet>
+		<servlet-name>appUpdate</servlet-name>
+		<servlet-class>com.kubeiwu.servlet.AppInfoServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>appUpdate</servlet-name>
+		<url-pattern>/appUpdate</url-pattern>
+	</servlet-mapping>
  
 </web-app>
